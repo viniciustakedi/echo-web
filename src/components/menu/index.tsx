@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 
 export default function Menu() {
@@ -20,12 +21,13 @@ export default function Menu() {
       <ul className="px-5 py-4 flex items-center justify-between space-x-6">
         {menuItems.map(({ href, label, className }, index) => (
           <li key={index}>
-            <a
+            <Link
               href={href}
+              onClick={(event) => event.preventDefault()}
               className={`${className ?? "text-gray-700 hover:text-black"}`}
             >
               {label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

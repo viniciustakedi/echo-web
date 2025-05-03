@@ -117,10 +117,6 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-p {
-  @apply text-base leading-7 text-[#323232];
-}
-
 .base__div {
   @apply flex items-center justify-center h-screen w-full bg-gradient-to-b from-[#323232] to-[#000] p-5;
 }
