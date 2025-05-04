@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: [
+      "takedi-portfolio.s3.sa-east-1.amazonaws.com",
+      "www.lospaghetto.com.br",
+    ],
+  },
 };
 
 export default nextConfig;
