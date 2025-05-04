@@ -46,9 +46,7 @@ export default function CardTip({
                 <Text className="text-sm text-gray-600 mr-1">4.5</Text>
                 <StarRating rating={4.5} />
                 <Text className="text-gray-300 pl-[4px] pr-[3px]">•</Text>
-                <div>
-                  <PriceRating rating={3} maxSymbols={5} />
-                </div>
+                <PriceRating rating={3} />
               </div>
               <div className="flex flex-wrap items-center mt-2 gap-1">
                 <div className="flex bg-[#323232] rounded-full w-auto items-center justify-center px-2 py-1">
@@ -60,10 +58,12 @@ export default function CardTip({
               </div>
             </div>
           </div>
-          <div></div>
-          <button className=" bg-[#323232] text-white py-2 px-4 rounded-full mt-4 cursor-pointer hover:bg-black transition duration-300">
-            <Link href="/tip/teste">See more</Link>
-          </button>
+          <Link
+            href={`/review/teste`}
+            className="bg-[#323232] text-white py-2 text-center px-4 rounded-full mt-4 cursor-pointer hover:bg-black transition duration-300"
+          >
+            See more
+          </Link>
         </div>
       )}
     </>

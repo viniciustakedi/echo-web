@@ -4,6 +4,8 @@ import { Geist } from "next/font/google";
 import { ReactQuery } from "../../config/react-query/ReactQueryProvider";
 import { I18nProvider } from "../../config/i18n/I18nProvider";
 
+import "github-markdown-css/github-markdown-light.css";
+
 import "./globals.css";
 
 const geistSans = Geist({

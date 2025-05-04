@@ -19,7 +19,7 @@ const ZOOM_DEFAULT = 17;
 export default function MapViewer() {
   // https://cloud.maptiler.com/maps/
 
-  const [isTipCardOpen, setIsTipCardOpen] = React.useState(false);
+  const [isTipCardOpen, setIsTipCardOpen] = React.useState(true);
 
   const [viewState, setViewState] = React.useState({
     longitude: -46.6333,
@@ -69,7 +69,7 @@ export default function MapViewer() {
         onMove={onMove}
         maxZoom={ZOOM_DEFAULT}
         style={{ width: "100%", height: "100%" }}
-        mapStyle="https://api.maptiler.com/maps/streets-v2/style.json?key=El0c3ubfU8e12lzEmAyJ"
+        mapStyle={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`}
       >
         <Tooltip>
           <TooltipTrigger asChild>
@@ -85,8 +85,8 @@ export default function MapViewer() {
           </TooltipContent>
         </Tooltip>
         <Marker
-          longitude={-46.51417213842298}
-          latitude={-23.668085675992876}
+          longitude={-46.565164}
+          latitude={-23.546421}
           className="cursor-pointer"
           onClick={() => setIsTipCardOpen(true)}
         >
@@ -95,7 +95,7 @@ export default function MapViewer() {
               <div className="flex flex-col items-center">
                 <div className="bg-white w-20 h-20 p-1 rounded-md">
                   <Image
-                    src="https://takedi-portfolio.s3.sa-east-1.amazonaws.com/jobs/ideamaker.webp"
+                    src="https://www.lospaghetto.com.br/img/banner1.png"
                     alt="Apple Store"
                     width={1200}
                     height={1200}
@@ -106,7 +106,7 @@ export default function MapViewer() {
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <Text>Home Sweet Home</Text>
+              <Text>Lo Spaghetto</Text>
             </TooltipContent>
           </Tooltip>
         </Marker>

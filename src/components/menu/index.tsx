@@ -23,7 +23,6 @@ export default function Menu() {
           <li key={index}>
             <Link
               href={href}
-              onClick={(event) => event.preventDefault()}
               className={`${className ?? "text-gray-700 hover:text-black"}`}
             >
               {label}

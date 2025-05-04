@@ -1,13 +1,13 @@
 import { DollarSign } from "lucide-react";
 
 interface PriceRatingProps {
-  rating: number; // integer, e.g. 2, 3, 4…
-  maxSymbols?: number; // defaults to 5 dollars
+  rating: number; // e.g. 3
+  maxSymbols?: number; // e.g. 3
 }
 
 export function PriceRating({ rating, maxSymbols = 5 }: PriceRatingProps) {
   return (
-    <div className="flex items-center space-x-0">
+    <div className="flex items-center">
       {Array.from({ length: maxSymbols }, (_, i) => (
         <DollarSign
           key={i}

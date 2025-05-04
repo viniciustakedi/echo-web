@@ -40,8 +40,8 @@ export function StarRating({ rating, maxStars = 5 }: StarRatingProps) {
           })}
         </div>
       </TooltipTrigger>
-      <TooltipContent>
-        <Text>Awesome rate</Text>
+      <TooltipContent side="bottom" dark>
+        <Text className="text-white">Awesome rate</Text>
       </TooltipContent>
     </Tooltip>
   );
