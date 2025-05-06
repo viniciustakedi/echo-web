@@ -49,7 +49,7 @@ const Newsletter = () => {
             <Button
               type="submit"
               size="lg"
-              className="h-12 bg-travel-orange hover:bg-travel-orange/90"
+              className="h-12 bg-green-600 hover:bg-green-700 text-white font-semibold transition-colors duration-300 cursor-pointer"
             >
               Subscribe
             </Button>

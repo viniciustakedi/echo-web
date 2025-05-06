@@ -10,7 +10,7 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80')",
+          backgroundImage: "url('https://images.unsplash.com/photo-1519677100203-a0e668c92439?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
         }}
       >
         <div className="absolute inset-0 bg-black/30"></div>
@@ -22,7 +22,7 @@ const HeroSection = () => {
           Discover Your Next Adventure
         </h1>
         <p className="max-w-2xl mx-auto mb-8 text-xl text-white/90">
-          Explore thousands of destinations, read authentic reviews, and book unforgettable experiences worldwide.
+          Check my point of view on restaurants, hotels, local spots, and attractions.
         </p>
 
         {/* Search Form */}
@@ -38,11 +38,11 @@ const HeroSection = () => {
             <div className="flex-1">
               <Input
                 type="text"
-                placeholder="When? (dates)"
+                placeholder="What kind of experience?"
                 className="h-12 text-lg"
               />
             </div>
-            <Button size="lg" className="h-12 gap-2 text-lg bg-travel-orange hover:bg-travel-orange/90">
+            <Button size="lg" className="h-12 gap-2 text-lg bg-green-600 hover:bg-green-700 cursor-pointer">
               <Search className="w-5 h-5" />
               Search
             </Button>
@@ -51,19 +51,19 @@ const HeroSection = () => {
 
         {/* Quick Links */}
         <div className="flex flex-wrap justify-center gap-4 mt-6">
-          <Button variant="link" className="text-white hover:text-travel-light-blue">
+          <Button variant="link" className="text-white hover:text-green-500 cursor-pointer">
             Hotels
           </Button>
-          <Button variant="link" className="text-white hover:text-travel-light-blue">
+          <Button variant="link" className="text-white hover:text-green-500 cursor-pointer">
             Flights
           </Button>
-          <Button variant="link" className="text-white hover:text-travel-light-blue">
+          <Button variant="link" className="text-white hover:text-green-500 cursor-pointer">
             Things to Do
           </Button>
-          <Button variant="link" className="text-white hover:text-travel-light-blue">
+          <Button variant="link" className="text-white hover:text-green-500 cursor-pointer">
             Vacation Rentals
           </Button>
-          <Button variant="link" className="text-white hover:text-travel-light-blue">
+          <Button variant="link" className="text-white hover:text-green-500 cursor-pointer">
             Restaurants
           </Button>
         </div>

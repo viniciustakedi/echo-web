@@ -73,9 +73,9 @@ const PopularDestinations = () => {
       <div className="container px-4 mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold">Popular Destinations</h2>
+            <h2 className="text-3xl font-bold">I will definitely be back!</h2>
             <p className="mt-2 text-gray-600">
-              Explore top-rated cities and regions loved by travelers worldwide
+              Explore top-rated cities and regions loved worldwide.
             </p>
           </div>
           <Button className="hidden md:inline-flex bg-travel-blue hover:bg-travel-blue/90">
@@ -90,14 +90,14 @@ const PopularDestinations = () => {
                 key={destination.id}
                 className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
-                <Card className="h-full overflow-hidden transition-all duration-200 hover:shadow-lg">
+                <Card className="h-full overflow-hidden transition-all duration-200 hover:shadow-lg py-0 pb-6">
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={destination.image}
                       alt={destination.name}
                       className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
                     />
-                    <div className="absolute top-0 right-0 p-2 m-2 text-xs font-bold text-white bg-travel-orange rounded-full">
+                    <div className="absolute top-0 right-0 p-2 m-2 text-xs font-bold text-white bg-green-600 rounded-full">
                       {destination.rating} ★
                     </div>
                   </div>
@@ -113,7 +113,7 @@ const PopularDestinations = () => {
                     </p>
                     <Button
                       variant="link"
-                      className="px-0 mt-2 text-travel-blue"
+                      className="px-0 mt-2 text-[#323232] cursor-pointer"
                     >
                       Explore
                     </Button>
