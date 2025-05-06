@@ -1,23 +1,28 @@
-import Menu from "@/components/menu";
-import { Title } from "@/components/ui/title";
-import Image from "next/image";
+import React from "react";
 
-export default function Home() {
+import Menu from "@/components/menu";
+import Footer from "@/components/footer";
+
+import FeaturedExperiences from "./home/components/FeaturedExperiences";
+import PopularDestinations from "./home/components/PopularDestinations";
+import Testimonials from "./home/components/Testimonials";
+import HeroSection from "./home/components/HeroSection";
+import Newsletter from "./home/components/Newsletter";
+
+const HomePage = () => {
   return (
-    <div className="base__div">
-      <div className="base__div__page">
-        <Menu />
-        <main className="flex flex-col items-center justify-center h-[40vh]">
-          <div className="intro">
-            <Title className="font-black">
-              Não sabe pra onde ir? O lugar realmente é bom?
-            </Title>
-            <Title className="font-black">
-              Deixa comigo que eu faço a review e conto pra você!
-            </Title>
-          </div>
-        </main>
-      </div>
+    <div className="min-h-screen">
+      <Menu />
+      <main>
+        <HeroSection />
+        <PopularDestinations />
+        <FeaturedExperiences />
+        <Testimonials />
+        <Newsletter />
+      </main>
+      <Footer />
     </div>
   );
-}
+};
+
+export default HomePage;
