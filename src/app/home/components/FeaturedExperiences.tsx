@@ -89,7 +89,7 @@ const FeaturedExperiences = () => {
           {experiences.map((experience) => (
             <Card
               key={experience.id}
-              className="overflow-hidden transition-all duration-200 hover:shadow-lg"
+              className="overflow-hidden transition-all duration-200 hover:shadow-lg py-0 pb-6"
             >
               <div className="relative h-48">
                 <img
@@ -97,14 +97,14 @@ const FeaturedExperiences = () => {
                   alt={experience.title}
                   className="object-cover w-full h-full"
                 />
-                <div className="absolute top-0 left-0 px-3 py-1 m-3 text-xs font-semibold text-white bg-travel-green rounded-full">
+                <div className="absolute top-0 left-0 px-3 py-1 m-3 text-xs font-semibold text-white bg-green-600 rounded-full">
                   {experience.category}
                 </div>
               </div>
 
               <CardContent className="p-4">
                 <div className="flex items-center gap-1 mb-2">
-                  <div className="flex text-travel-orange">
+                  <div className="flex text-[#323232]">
                     <Star className="w-4 h-4 fill-current" />
                     <span className="ml-1 font-medium">
                       {experience.rating}
@@ -134,9 +134,9 @@ const FeaturedExperiences = () => {
                   </div>
                   <Button
                     size="sm"
-                    className="bg-travel-blue hover:bg-travel-blue/90"
+                    className="bg-[#323232] hover:bg-black cursor-pointer"
                   >
-                    Book
+                    See more
                   </Button>
                 </div>
               </CardContent>
@@ -145,7 +145,7 @@ const FeaturedExperiences = () => {
         </div>
 
         <div className="flex justify-center mt-10">
-          <Button className="bg-travel-blue hover:bg-travel-blue/90">
+          <Button className="bg-[#323232] hover:bg-black cursor-pointer">
             View All Experiences
           </Button>
         </div>

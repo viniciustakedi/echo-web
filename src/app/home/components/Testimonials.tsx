@@ -51,7 +51,7 @@ const Testimonials = () => {
               className="overflow-hidden transition-all duration-200 hover:shadow-lg"
             >
               <CardContent className="p-6">
-                <div className="flex items-center gap-1 mb-3 text-travel-orange">
+                <div className="flex items-center gap-1 mb-3 text-green-600">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-current" />
                   ))}

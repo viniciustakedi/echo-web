@@ -1,4 +1,5 @@
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import Menu from "@/components/menu";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -55,24 +56,29 @@ Happy coding!
   const { title, publishedAt, content } = review;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <article>
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">{title}</h1>
-          <p className="text-gray-500">
-            Published on{" "}
-            {new Date(publishedAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </header>
+    <>
+      <Menu />
+      <main>
+        <div className="max-w-3xl mx-auto px-6 pb-6 pt-32">
+          <article>
+            <header className="mb-8">
+              <h1 className="text-4xl font-bold mb-2">{title}</h1>
+              <p className="text-gray-500">
+                Published on{" "}
+                {new Date(publishedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+            </header>
 
-        <div className="markdown-body max-w-3xl mx-auto">
-          <MarkdownRenderer content={content} />
+            <div className="markdown-body max-w-3xl mx-auto">
+              <MarkdownRenderer content={content} />
+            </div>
+          </article>
         </div>
-      </article>
-    </div>
+      </main>
+    </>
   );
 }
