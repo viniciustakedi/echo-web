@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run PR Whisperer AI
-        uses: viniciustakedi/PR-Whisperer-AI@gpt-4.1-mini
+        uses: viniciustakedi/PR-Whisperer-AI@clever-whisperer
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
         env:
