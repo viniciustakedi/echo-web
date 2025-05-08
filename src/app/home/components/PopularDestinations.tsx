@@ -52,7 +52,7 @@ const destinations = [
     name: "Santorini",
     country: "Greece",
     image:
-      "https://images.unsplash.com/photo-1547497044-a6b92ba88461?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.8,
     reviews: 7654,
   },
@@ -61,7 +61,7 @@ const destinations = [
     name: "Cape Town",
     country: "South Africa",
     image:
-      "https://images.unsplash.com/photo-1562583489-bf23ac555bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "https://unsplash.com/photos/an-aerial-view-of-the-city-of-cape-town-and-lions-head-mountain-in-south-africa-byUDvQhsh4U",
     rating: 4.7,
     reviews: 6543,
   },
