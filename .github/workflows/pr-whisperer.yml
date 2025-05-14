@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize]
 
 permissions:
+  contents: read
   pull-requests: write
 
 jobs:
@@ -17,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run PR Whisperer AI
-        uses: viniciustakedi/PR-Whisperer-AI@clever-whisperer
+        uses: viniciustakedi/PR-Whisperer-AI@main
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
         env:
