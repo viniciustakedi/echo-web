@@ -11,16 +11,20 @@ import Newsletter from "./home/components/Newsletter";
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen">
-      <Menu />
-      <main>
-        <HeroSection />
-        <PopularDestinations />
-        <FeaturedExperiences />
-        <Testimonials />
-        <Newsletter />
-      </main>
-      <Footer />
+    <div className="base__div">
+      <div className="base__div__page">
+        <div className="min-h-screen">
+          <Menu />
+          <main>
+            <HeroSection />
+            <PopularDestinations />
+            <FeaturedExperiences />
+            <Testimonials />
+            <Newsletter />
+          </main>
+          <Footer />
+        </div>
+      </div>
     </div>
   );
 };
