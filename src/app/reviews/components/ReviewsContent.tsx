@@ -15,9 +15,9 @@ export default function ReviewsContent() {
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [reviews, setReviews] = useState<GetRequests.ReviewListItem[] | null>(
-    null
-  );
+  const [reviews, setReviews] = useState<
+    GetRequests.Review.ReviewListItem[] | null
+  >(null);
 
   const fetchReviews = async () => {
     const response = await getReviews(page, limit);

@@ -13,14 +13,22 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import CardTip from "./tip-card";
+import { GetRequests } from "@/requests/get/types";
+import { getMapMarkerById, getMapMarkers } from "@/requests/get";
 
 const ZOOM_DEFAULT = 17;
 
 export default function MapViewer() {
   // https://cloud.maptiler.com/maps/
 
-  const [isTipCardOpen, setIsTipCardOpen] = React.useState(true);
+  const [mapMarkers, setMapMarkers] = React.useState<
+    GetRequests.Map.MapMarker[] | null
+  >(null);
 
+  const [currentMarkerData, setCurrentMarkerData] =
+    React.useState<GetRequests.Map.GetDetailedMapMarkerResponse | null>(null);
+
+  const [isTipCardOpen, setIsTipCardOpen] = React.useState(true);
   const [viewState, setViewState] = React.useState({
     longitude: -46.6333,
     latitude: -23.5505,
@@ -46,6 +54,13 @@ export default function MapViewer() {
   );
 
   React.useEffect(() => {
+    const fetchReview = async () => {
+      const response = await getMapMarkers();
+      setMapMarkers(response);
+    };
+
+    fetchReview();
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         setViewState({
@@ -61,6 +76,12 @@ export default function MapViewer() {
       });
     }
   }, []);
+
+  const handleClickOnMarker = async (id: string) => {
+    const markerDetails = await getMapMarkerById(id);
+    setCurrentMarkerData(markerDetails);
+    setIsTipCardOpen(true);
+  };
 
   return (
     <>
@@ -84,34 +105,45 @@ export default function MapViewer() {
             <Text>You</Text>
           </TooltipContent>
         </Tooltip>
-        <Marker
-          longitude={-46.565164}
-          latitude={-23.546421}
-          className="cursor-pointer"
-          onClick={() => setIsTipCardOpen(true)}
-        >
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex flex-col items-center">
-                <div className="bg-white w-20 h-20 p-1 rounded-md">
-                  <Image
-                    src="https://www.lospaghetto.com.br/img/banner1.png"
-                    alt="Apple Store"
-                    width={1200}
-                    height={1200}
-                    className="w-full h-full object-cover rounded-md"
-                  />
-                </div>
-                <div className="w-0 h-0 border-l-[10px] border-l-transparent border-t-[10px] border-t-white border-r-[10px] border-r-transparent" />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <Text>Lo Spaghetto</Text>
-            </TooltipContent>
-          </Tooltip>
-        </Marker>
+        {mapMarkers &&
+          mapMarkers.length > 0 &&
+          mapMarkers.map((marker) => (
+            <Marker
+              key={marker._id}
+              longitude={Number(marker.longitude)}
+              latitude={Number(marker.latitude)}
+              className="cursor-pointer"
+              onClick={() => handleClickOnMarker(marker._id)}
+            >
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex flex-col items-center">
+                    <div className="bg-white w-20 h-20 p-1 rounded-md">
+                      <Image
+                        src={marker.review.thumbnail}
+                        alt={marker.review.headline}
+                        width={1200}
+                        height={1200}
+                        className="w-full h-full object-cover rounded-md"
+                      />
+                    </div>
+                    <div className="w-0 h-0 border-l-[10px] border-l-transparent border-t-[10px] border-t-white border-r-[10px] border-r-transparent" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <Text>{marker.review.headline}</Text>
+                </TooltipContent>
+              </Tooltip>
+            </Marker>
+          ))}
       </Map>
-      <CardTip isOpen={isTipCardOpen} onClose={() => setIsTipCardOpen(false)} />
+      {currentMarkerData && (
+        <CardTip
+          isOpen={isTipCardOpen}
+          onClose={() => setIsTipCardOpen(false)}
+          data={currentMarkerData}
+        />
+      )}
     </>
   );
 }

@@ -10,7 +10,9 @@ interface Props {
 }
 
 export default function ReviewContent({ id }: Props) {
-  const [review, setReview] = useState<GetRequests.ReviewByKey | null>(null);
+  const [review, setReview] = useState<GetRequests.Review.ReviewByKey | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchReview = async () => {
