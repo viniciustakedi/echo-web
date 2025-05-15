@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
+import { Toaster } from "@/components/ui/sonner";
+
 import { ReactQuery } from "../../config/react-query/ReactQueryProvider";
 import { I18nProvider } from "../../config/i18n/I18nProvider";
 
@@ -28,6 +30,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} antialiased`}>
         <ReactQuery>
           <I18nProvider>{children}</I18nProvider>
+          <Toaster />
         </ReactQuery>
       </body>
     </html>
