@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+
 export namespace GetRequests {
   export namespace Review {
     export interface ReviewByKey {
