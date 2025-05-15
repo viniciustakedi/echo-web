@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { getReviewByKey } from "@/requests/get";

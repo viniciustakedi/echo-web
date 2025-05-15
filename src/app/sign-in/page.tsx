@@ -1,5 +1,6 @@
 import Menu from "@/components/menu";
 import SignInForm from "./components/SignInForm";
+import Image from "next/image";
 
 const SignInPage = () => {
   return (
@@ -42,16 +43,18 @@ const SignInPage = () => {
                 </p>
                 <div className="flex items-center space-x-2">
                   <div className="w-10 h-10 rounded-full bg-white overflow-hidden">
-                    <img
+                    <Image
                       src="https://randomuser.me/api/portraits/women/32.jpg"
                       alt="User"
                       className="w-full h-full object-cover"
+                      width={1200}
+                      height={1200}
                     />
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-medium">Sarah J.</div>
                     <div className="text-xs opacity-80">
-                      "ECHO helped me find hidden gems in Barcelona!"
+                      &ldquo;ECHO helped me find hidden gems in Barcelona!&ldquo;
                     </div>
                   </div>
                 </div>

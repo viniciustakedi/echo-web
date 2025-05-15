@@ -12,7 +12,7 @@ const Footer = () => {
               <span className="text-2xl font-bold text-travel-blue">Echo</span>
             </Link>
             <p className="mb-6 text-gray-400">
-              Discover the world's most amazing destinations with our curated
+              Discover the world&quot;s most amazing destinations with our curated
               travel experiences. From stunning beaches to cultural landmarks,
               we make travel planning easy and enjoyable.
             </p>

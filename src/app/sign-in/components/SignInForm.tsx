@@ -50,7 +50,7 @@ const SignInForm = () => {
       toast.success("Success!", {
         description: "You have been signed in.",
       });
-    } catch (error) {
+    } catch {
       toast("Uh oh! Something went wrong.", {
         description: "There was a problem with your request.",
       });
@@ -197,7 +197,9 @@ const SignInForm = () => {
       </div>
 
       <div className="text-center text-sm">
-        <span className="text-muted-foreground">Don't have an account?</span>{" "}
+        <span className="text-muted-foreground">
+          Don&quot;t have an account?
+        </span>{" "}
         <Button variant="link" className="p-0 text-green-600">
           Sign up
         </Button>

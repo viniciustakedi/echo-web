@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
+import Image from "next/image";
 
 const experiences = [
   {
@@ -92,10 +93,12 @@ const FeaturedExperiences = () => {
               className="overflow-hidden transition-all duration-200 hover:shadow-lg py-0 pb-6"
             >
               <div className="relative h-48">
-                <img
+                <Image
                   src={experience.image}
                   alt={experience.title}
                   className="object-cover w-full h-full"
+                  width={1500}
+                  height={1000}
                 />
                 <div className="absolute top-0 left-0 px-3 py-1 m-3 text-xs font-semibold text-white bg-green-600 rounded-full">
                   {experience.category}
