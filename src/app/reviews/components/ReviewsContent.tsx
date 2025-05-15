@@ -13,20 +13,20 @@ import { Title } from "@/components/ui/title";
 export default function ReviewsContent() {
   const router = useRouter();
 
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [page] = useState(1);
+  const [limit] = useState(10);
   const [reviews, setReviews] = useState<
     GetRequests.Review.ReviewListItem[] | null
   >(null);
 
-  const fetchReviews = async () => {
-    const response = await getReviews(page, limit);
-    setReviews(response);
-  };
-
   useEffect(() => {
+    const fetchReviews = async () => {
+      const response = await getReviews(page, limit);
+      setReviews(response);
+    };
+
     fetchReviews();
-  }, []);
+  }, [page, limit]);
 
   if (!reviews || reviews.length === 0) {
     return (

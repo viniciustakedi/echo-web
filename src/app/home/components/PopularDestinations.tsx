@@ -9,6 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { MapPin } from "lucide-react";
+import Image from "next/image";
 
 const destinations = [
   {
@@ -92,10 +93,12 @@ const PopularDestinations = () => {
               >
                 <Card className="h-full overflow-hidden transition-all duration-200 hover:shadow-lg py-0 pb-6">
                   <div className="relative h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={destination.image}
                       alt={destination.name}
                       className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
+                      width={1200}
+                      height={800}
                     />
                     <div className="absolute top-0 right-0 p-2 m-2 text-xs font-bold text-white bg-green-600 rounded-full">
                       {destination.rating} ★

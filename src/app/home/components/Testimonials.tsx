@@ -19,7 +19,7 @@ const testimonials = [
     location: "Toronto, Canada",
     avatar: "https://i.pravatar.cc/150?img=8",
     rating: 5,
-    text: "The walking food tour in Barcelona was the highlight of our trip. We discovered hidden gems we would have never found on our own. Can't wait to book our next adventure!",
+    text: "The walking food tour in Barcelona was the highlight of our trip. We discovered hidden gems we would have never found on our own. Can&quot;t wait to book our next adventure!",
     destination: "Barcelona, Spain",
   },
   {
@@ -58,7 +58,7 @@ const Testimonials = () => {
                 </div>
 
                 <p className="mb-4 italic text-gray-700">
-                  "{testimonial.text}"
+                  &ldquo{testimonial.text}&ldquo
                 </p>
 
                 <div className="flex items-center gap-4">

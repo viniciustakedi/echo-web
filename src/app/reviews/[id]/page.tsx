@@ -2,11 +2,11 @@ import Menu from "@/components/menu";
 import ReviewContent from "./components/ReviewContent";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function ReviewPage({ params }: Props) {
-  const { id } = params;
+  const { id } = await params;
 
   return (
     <div className="base__div">
