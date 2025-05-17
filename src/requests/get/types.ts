@@ -12,6 +12,9 @@ export namespace GetRequests {
       claps: number;
       createdBy: string;
       updatedAt: string;
+      address: string;
+      country: string;
+      city: string;
       createdAt: string;
       priceRating: number;
       tags: {

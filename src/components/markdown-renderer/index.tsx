@@ -12,10 +12,12 @@ export function MarkdownRenderer({
   className = "",
 }: MarkdownRendererProps) {
   return (
-    <article className={`prose prose-lg mx-auto ${className}`}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml={false}>
-        {content}
-      </ReactMarkdown>
-    </article>
+    <div className="markdown-body max-w-3xl mx-auto">
+      <article className={`prose prose-lg mx-auto ${className}`}>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml={false}>
+          {content}
+        </ReactMarkdown>
+      </article>
+    </div>
   );
 }
