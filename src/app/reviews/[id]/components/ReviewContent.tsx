@@ -45,9 +45,7 @@ export default function ReviewContent({ id }: Props) {
         </p>
       </header>
 
-      <div className="markdown-body max-w-3xl mx-auto">
-        <MarkdownRenderer content={review?.content} />
-      </div>
+      <MarkdownRenderer content={review?.content} />
     </article>
   );
 }
