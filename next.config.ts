@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     domains: [
       "takedi-portfolio.s3.sa-east-1.amazonaws.com",
       "www.lospaghetto.com.br",
+      "images.unsplash.com",
+      "unsplash.com",
+      "randomuser.me"
     ],
   },
 };
