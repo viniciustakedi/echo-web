@@ -2,7 +2,16 @@ import Menu from "@/components/menu";
 import SignInForm from "./components/SignInForm";
 import Image from "next/image";
 
-const SignInPage = () => {
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+
+const SignInPage = async () => {
+  const session = await getServerSession();
+
+  if (session) {
+    redirect("/dashboard");
+  }
+
   return (
     <div className="base__div">
       <div className="base__div__page">
@@ -54,7 +63,8 @@ const SignInPage = () => {
                   <div className="flex-1">
                     <div className="text-sm font-medium">Sarah J.</div>
                     <div className="text-xs opacity-80">
-                      &ldquo;ECHO helped me find hidden gems in Barcelona!&ldquo;
+                      &ldquo;ECHO helped me find hidden gems in
+                      Barcelona!&ldquo;
                     </div>
                   </div>
                 </div>

@@ -1,7 +1,9 @@
 "use client";
+
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -12,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import AuthSocialButton from "./AuthSocialButton";
+import { signIn } from "next-auth/react";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -24,6 +27,7 @@ const signInSchema = z.object({
 type SignInFormValues = z.infer<typeof signInSchema>;
 
 const SignInForm = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -41,19 +45,23 @@ const SignInForm = () => {
 
   const onSubmit = async (data: SignInFormValues) => {
     try {
-      // This would typically be an API call to authenticate
-      console.log("Sign in data:", data);
-
-      // Simulate API call with delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      toast.success("Success!", {
-        description: "You have been signed in.",
+      const res = await signIn("credentials", {
+        redirect: false,
+        login: data.email,
+        password: data.password,
       });
-    } catch {
-      toast("Uh oh! Something went wrong.", {
-        description: "There was a problem with your request.",
-      });
+
+      if (res?.ok) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast("Uh oh! Something went wrong.", {
+          description: error.message,
+        });
+      } else {
+        toast("Uh oh! Something went wrong.");
+      }
     }
   };
 
