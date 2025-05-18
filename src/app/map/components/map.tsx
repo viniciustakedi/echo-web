@@ -13,8 +13,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import CardTip from "./tip-card";
-import { GetRequests } from "@/requests/get/types";
-import { getMapMarkerById, getMapMarkers } from "@/requests/get";
+import { getMapMarkerById, getMapMarkers } from "@/requests/get/map-markers";
+import { GetMaps } from "@/requests/get/map-markers/types";
 
 const ZOOM_DEFAULT = 17;
 
@@ -22,11 +22,11 @@ export default function MapViewer() {
   // https://cloud.maptiler.com/maps/
 
   const [mapMarkers, setMapMarkers] = React.useState<
-    GetRequests.Map.MapMarker[] | null
+    GetMaps.MapMarker[] | null
   >(null);
 
   const [currentMarkerData, setCurrentMarkerData] =
-    React.useState<GetRequests.Map.GetDetailedMapMarkerResponse | null>(null);
+    React.useState<GetMaps.MapMarkerDetailed | null>(null);
 
   const [isTipCardOpen, setIsTipCardOpen] = React.useState(true);
   const [viewState, setViewState] = React.useState({

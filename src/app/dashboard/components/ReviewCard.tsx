@@ -12,21 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Edit, Star } from "lucide-react";
 import Link from "next/link";
-import { GetRequests } from "@/requests/get/types";
-import { useEffect, useState } from "react";
-import { getReviewByKey } from "@/requests/get";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 interface ReviewCardProps {
-  review: GetRequests.Review.ReviewListItem;
+  review: GetReviews.ReviewListItem;
   onDelete: (id: string) => void;
 }
 
 export function ReviewCard({ review, onDelete }: ReviewCardProps) {
-  const truncate = (text: string, length: number) => {
-    if (text.length <= length) return text;
-    return text.slice(0, length) + "...";
-  };
-
   return (
     <Card className="overflow-hidden border hover:shadow-md transition-all animate-fade-in">
       <CardHeader className="pb-2">
@@ -61,7 +54,7 @@ export function ReviewCard({ review, onDelete }: ReviewCardProps) {
           {new Date(review.createdAt).toLocaleDateString()}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-y-scroll">
           <Button variant="ghost" size="sm" asChild>
             <Link href={`/dashboard/review/${review.friendlyUrl}`}>
               <Eye className="h-4 w-4 mr-1" /> View

@@ -10,7 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import { Book, Edit, LayoutDashboard, Settings } from "lucide-react";
 import Link from "next/link";
@@ -59,9 +58,7 @@ export function AppSidebar() {
                     <Link
                       href={item.url}
                       className={getNavClass({ isActive: isActive(item.url) })}
-                      onClick={(e) => {
-                        e.preventDefault;
-                      }}
+                      onClick={(e) => e.preventDefault}
                     >
                       <item.icon className={`h-5 w-5 mr-2`} />
                       <span>{item.title}</span>

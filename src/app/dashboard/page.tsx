@@ -1,15 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Book, Edit, Star, MapPin, ArrowRight } from "lucide-react";
 
@@ -17,18 +13,18 @@ import { Book, Edit, Star, MapPin, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { ReviewCard } from "./components/ReviewCard";
-import { GetRequests } from "@/requests/get/types";
 import { getReviews } from "@/requests/get";
 import { ScreenContentDefault } from "./components/ScreenContentDefault";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 const Dashboard = () => {
   const { status } = useSession({ required: true });
 
   const [page] = useState(1);
   const [limit] = useState(10);
-  const [reviews, setReviews] = useState<
-    GetRequests.Review.ReviewListItem[] | null
-  >(null);
+  const [reviews, setReviews] = useState<GetReviews.ReviewListItem[] | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchReviews = async () => {

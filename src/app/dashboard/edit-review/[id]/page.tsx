@@ -6,17 +6,18 @@ import { toast } from "sonner";
 
 import { ReviewEditor } from "../../components/ReviewEditor";
 
-import { GetRequests } from "@/requests/get/types";
 import { getReviewByKey } from "@/requests/get";
 import { ScreenContentDefault } from "../../components/ScreenContentDefault";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 const EditReview = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [reviewData, setReviewData] =
-    useState<GetRequests.Review.ReviewByKey | null>(null);
+  const [reviewData, setReviewData] = useState<GetReviews.ReviewByKey | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -34,9 +35,9 @@ const EditReview = () => {
     };
 
     fetchReview();
-  }, [id, toast]);
+  }, [id, router]);
 
-  const handleSaveReview = async (data: any) => {
+  const handleSaveReview = async (data: GetReviews.ReviewByKey) => {
     setIsLoading(true);
 
     try {

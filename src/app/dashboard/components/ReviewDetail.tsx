@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { GetRequests } from "@/requests/get/types";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 interface ReviewDetailProps {
-  review: GetRequests.Review.ReviewByKey;
+  review: GetReviews.ReviewByKey;
 }
 
 export function ReviewDetail({ review }: ReviewDetailProps) {

@@ -8,15 +8,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ReviewList } from "../components/ReviewList";
 
-import { GetRequests } from "@/requests/get/types";
 import { getReviews } from "@/requests/get";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 const Reviews = () => {
   const [page] = useState(1);
   const [limit] = useState(10);
   const [reviews, setReviews] = useState<
-    GetRequests.Review.ReviewListItem[] | null
+    GetReviews.ReviewListItem[] | null
   >(null);
 
   useEffect(() => {

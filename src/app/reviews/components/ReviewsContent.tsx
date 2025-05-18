@@ -2,22 +2,22 @@
 import { useEffect, useState } from "react";
 
 import { getReviews } from "@/requests/get";
-import { GetRequests } from "@/requests/get/types";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { Text } from "@/components/ui/text";
 import { Title } from "@/components/ui/title";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 export default function ReviewsContent() {
   const router = useRouter();
 
   const [page] = useState(1);
   const [limit] = useState(10);
-  const [reviews, setReviews] = useState<
-    GetRequests.Review.ReviewListItem[] | null
-  >(null);
+  const [reviews, setReviews] = useState<GetReviews.ReviewListItem[] | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -44,9 +44,8 @@ export default function ReviewsContent() {
       </div>
       <div className="w-full max-w-3xl">
         {reviews.map((review) => (
-          <>
+          <div key={review._id}>
             <div
-              key={review._id}
               className="flex flex-row justify-between items-center mb-8 cursor-pointer gap-4"
               onClick={() => router.push(`/reviews/${review.friendlyUrl}`)}
             >
@@ -87,7 +86,7 @@ export default function ReviewsContent() {
               </div>
             </div>
             <hr className="border-gray-300" />
-          </>
+          </div>
         ))}
       </div>
     </div>
