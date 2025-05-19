@@ -11,11 +11,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
-import { GetRequests } from "@/requests/get/types";
+import { useTags } from "@/hooks/use-tags";
+import { GetReviews } from "@/requests/get/reviews/types";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ReviewEditorProps {
-  initialData?: Partial<any>;
-  onSave: (data: GetRequests.Review.ReviewByKey) => void;
+  initialData?: Partial<GetReviews.ReviewByKey>;
+  onSave: (data: GetReviews.ReviewByKey) => void;
   isLoading?: boolean;
 }
 
@@ -24,16 +34,19 @@ export function ReviewEditor({
   onSave,
   isLoading = false,
 }: ReviewEditorProps) {
+  const { tags: tagsCtx } = useTags();
   const [activeTab, setActiveTab] = useState("edit");
   const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState<{ name: string }[]>(initialData?.tags || []);
+  const [tags, setTags] = useState<{ name: string; _id: string }[]>(
+    initialData?.tags || []
+  );
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<GetRequests.Review.ReviewByKey>({
+  } = useForm<GetReviews.ReviewByKey>({
     defaultValues: {
       thumbnail: initialData?.thumbnail || "",
       headline: initialData?.headline || "",
@@ -49,19 +62,11 @@ export function ReviewEditor({
 
   const content = watch("content");
 
-  const addTag = () => {
-    const trimmedTag = tagInput.trim();
-    if (trimmedTag && !tags.includes({ name: trimmedTag })) {
-      setTags([...tags, { name: trimmedTag }]);
-      setTagInput("");
-    }
-  };
-
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter((tag) => tag.name !== tagToRemove));
   };
 
-  const onSubmit = (data: GetRequests.Review.ReviewByKey) => {
+  const onSubmit = (data: GetReviews.ReviewByKey) => {
     onSave({ ...data, tags });
   };
 
@@ -209,20 +214,38 @@ export function ReviewEditor({
         <Label htmlFor="tags" className="mb-2">
           Tags
         </Label>
-        <div className="flex gap-2">
-          <Input
-            id="tags"
+        <div className="flex gap-2 items-center">
+          <Select
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            placeholder="Add a tag and press Enter"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addTag();
+            onValueChange={(value) => setTagInput(value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a tag" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Tags</SelectLabel>
+                {tagsCtx?.map((tag: { name: string; _id: string }) => (
+                  <SelectItem key={tag._id} value={tag._id}>
+                    {tag.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Button
+            type="button"
+            onClick={() => {
+              const selectedTag = tagsCtx?.find(
+                (t: { _id: string }) => t._id === tagInput
+              );
+              if (selectedTag && !tags.some((t) => t._id === selectedTag._id)) {
+                setTags([...tags, selectedTag]);
+                setTagInput("");
               }
             }}
-          />
-          <Button type="button" onClick={addTag}>
+            disabled={!tagInput}
+          >
             Add
           </Button>
         </div>

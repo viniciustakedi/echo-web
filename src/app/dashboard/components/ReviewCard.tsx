@@ -12,20 +12,25 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Edit, Star } from "lucide-react";
 import Link from "next/link";
-import { GetRequests } from "@/requests/get/types";
-import { useEffect, useState } from "react";
-import { getReviewByKey } from "@/requests/get";
+import { GetReviews } from "@/requests/get/reviews/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 interface ReviewCardProps {
-  review: GetRequests.Review.ReviewListItem;
+  review: GetReviews.ReviewListItem;
   onDelete: (id: string) => void;
 }
 
 export function ReviewCard({ review, onDelete }: ReviewCardProps) {
-  const truncate = (text: string, length: number) => {
-    if (text.length <= length) return text;
-    return text.slice(0, length) + "...";
-  };
+  const [open, setOpen] = useState(false);
 
   return (
     <Card className="overflow-hidden border hover:shadow-md transition-all animate-fade-in">
@@ -61,7 +66,7 @@ export function ReviewCard({ review, onDelete }: ReviewCardProps) {
           {new Date(review.createdAt).toLocaleDateString()}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-y-scroll">
           <Button variant="ghost" size="sm" asChild>
             <Link href={`/dashboard/review/${review.friendlyUrl}`}>
               <Eye className="h-4 w-4 mr-1" /> View
@@ -74,14 +79,37 @@ export function ReviewCard({ review, onDelete }: ReviewCardProps) {
             </Link>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-destructive hover:text-destructive hover:bg-destructive/10"
-            onClick={() => onDelete(review._id)}
-          >
-            Delete
-          </Button>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              >
+                Delete
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. Are you sure you want to
+                  permanently delete this review from our servers?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    onDelete(review._id);
+                    setOpen(false);
+                  }}
+                >
+                  Confirm
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </CardFooter>
     </Card>

@@ -1,22 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 import { ReviewEditor } from "../../components/ReviewEditor";
 
-import { GetRequests } from "@/requests/get/types";
 import { getReviewByKey } from "@/requests/get";
 import { ScreenContentDefault } from "../../components/ScreenContentDefault";
+import { GetReviews } from "@/requests/get/reviews/types";
+import { updateReview } from "@/requests/patch";
 
 const EditReview = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const { data: session } = useSession({ required: true });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [reviewData, setReviewData] =
-    useState<GetRequests.Review.ReviewByKey | null>(null);
+  const [reviewData, setReviewData] = useState<GetReviews.ReviewByKey | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -34,16 +40,27 @@ const EditReview = () => {
     };
 
     fetchReview();
-  }, [id, toast]);
+  }, [id, router]);
 
-  const handleSaveReview = async (data: any) => {
+  const handleSaveReview = async (data: GetReviews.ReviewByKey) => {
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const apiToken = (session as any).apiToken as string;
 
-      console.log("Updated review:", data);
+      if (!reviewData?._id) {
+        throw new Error("Review id didn't found to update.");
+      }
+
+      const response = await updateReview(reviewData._id, data, apiToken);
+
+      if (response.status === 401) {
+        signOut({ redirect: false });
+      }
+
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
 
       toast.success("Review updated", {
         description: "Your review has been successfully updated.",
@@ -54,11 +71,16 @@ const EditReview = () => {
       console.error("Error updating review:", error);
 
       toast.error("Error", {
-        description: "There was an error updating your review.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "There was an error updating your review.",
       });
     } finally {
       setIsLoading(false);
     }
+
+    router.push("/dashboard/reviews");
   };
 
   if (!reviewData) {

@@ -21,9 +21,9 @@ export function ScreenContentDefault({
             </div>
 
             <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground">John Doe</span>
+              <span className="text-sm text-muted-foreground">Vinicius Takedi</span>
               <div className="h-8 w-8 rounded-full bg-[#000] flex items-center justify-center text-white text-sm">
-                JD
+                VT
               </div>
             </div>
           </header>
