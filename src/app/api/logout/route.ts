@@ -4,8 +4,6 @@ import { serialize } from "cookie";
 
 export function GET() {
   try {
-    console.log("[logout] route hit");
-
     // fallback if env var is missing
     const baseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
     const redirectUrl = new URL("/sign-in", baseUrl).toString();
@@ -25,12 +23,6 @@ export function GET() {
       response.headers.append("Set-Cookie", serialize(name, "", cookieOptions));
     });
 
-    console.log(
-      "[logout] expiring cookies:",
-      cookiesToExpire,
-      "→ redirect to",
-      redirectUrl
-    );
     return response;
   } catch (err) {
     console.error("[logout] ERROR:", err);

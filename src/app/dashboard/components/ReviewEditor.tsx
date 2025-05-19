@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { useTags } from "@/hooks/use-tags";
-import { cn } from "@/lib/utils";
 import { GetReviews } from "@/requests/get/reviews/types";
 import {
   Select,

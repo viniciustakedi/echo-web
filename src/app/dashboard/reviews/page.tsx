@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 "use client";
 
@@ -19,7 +20,7 @@ import { deleteReview } from "@/requests/delete";
 const Reviews = () => {
   const { data: session, status } = useSession({ required: true });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [_, setIsLoading] = useState(false);
   const [page] = useState(1);
   const [limit] = useState(10);
   const [reviews, setReviews] = useState<GetReviews.ReviewListItem[] | null>(
