@@ -28,26 +28,21 @@ export const getReviewByKey = async (
 export const getReviews = async (
   page: number,
   limit: number
-): Promise<GetReviews.ReviewListItem[]> => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/reviews?page=${page}&limit=${limit}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
+): Promise<GetReviews.ReviewListItem[] | number> => {
+  const response = await fetch(
+    `${BASE_URL}/reviews?page=${page}&limit=${limit}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
+  );
 
-    const result: GetReviews.GetReviewsResponse = await response.json();
-    return result.data;
-  } catch (error) {
-    console.error("Error fetching review by key:", error);
-    throw error;
+  if (!response.ok) {
+    return response.status;
   }
+
+  const result: GetReviews.GetReviewsResponse = await response.json();
+  return result.data;
 };

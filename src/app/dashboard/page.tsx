@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,10 +16,12 @@ import { ReviewCard } from "./components/ReviewCard";
 import { getReviews } from "@/requests/get";
 import { ScreenContentDefault } from "./components/ScreenContentDefault";
 import { GetReviews } from "@/requests/get/reviews/types";
+import { deleteReview } from "@/requests/delete";
 
 const Dashboard = () => {
-  const { status } = useSession({ required: true });
+  const { data: session, status } = useSession({ required: true });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [page] = useState(1);
   const [limit] = useState(10);
   const [reviews, setReviews] = useState<GetReviews.ReviewListItem[] | null>(
@@ -29,7 +31,15 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       const response = await getReviews(page, limit);
-      setReviews(response);
+
+      if (response === 404) {
+        toast.error("You don't have any reviews", {
+          description:
+            "Don't worrie! Start to rating to build your reviews portfolio.",
+        });
+      }
+
+      setReviews(Array.isArray(response) ? response : null);
     };
 
     fetchReviews();
@@ -37,10 +47,35 @@ const Dashboard = () => {
 
   if (status === "loading") return <p>Loading…</p>;
 
-  const deleteReview = (id: string) => {
-    toast.success("Review deleted", {
-      description: `Review with ID: ${id} has been deleted.`,
-    });
+  const handleDeleteReview = async (id: string) => {
+    setReviews(reviews ? reviews.filter((review) => review._id !== id) : null);
+    setIsLoading(true);
+
+    try {
+      const apiToken = (session as any).apiToken as string;
+      const response = await deleteReview(id, apiToken);
+
+      if (response.status === 401) {
+        signOut({ redirect: false });
+      }
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      toast.success("Review deleted", {
+        description: "The review has been successfully deleted.",
+      });
+    } catch (error) {
+      toast.error("Error in delete review!", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "There was an error creating your review.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Calculate stats
@@ -163,7 +198,7 @@ const Dashboard = () => {
                   <ReviewCard
                     key={review._id}
                     review={review}
-                    onDelete={deleteReview}
+                    onDelete={handleDeleteReview}
                   />
                 ))}
           </div>

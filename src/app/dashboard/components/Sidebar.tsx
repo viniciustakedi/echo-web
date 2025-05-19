@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Book, Edit, LayoutDashboard, Settings } from "lucide-react";
+import { Book, Edit, LayoutDashboard, LogOut } from "lucide-react";
 import Link from "next/link";
 
 export function AppSidebar() {
@@ -21,7 +21,7 @@ export function AppSidebar() {
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
     { title: "Reviews", url: "/dashboard/reviews", icon: Book },
     { title: "New Review", url: "/dashboard/new-review", icon: Edit },
-    { title: "Settings", url: "/dashboard/settings", icon: Settings },
+    { title: "Log Out", url: "logout", icon: LogOut },
   ];
 
   // Helper functions for active state and CSS classes
@@ -55,6 +55,7 @@ export function AppSidebar() {
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
+                    {/* TO-DO: Create a button to call the function signOut*/}
                     <Link
                       href={item.url}
                       className={getNavClass({ isActive: isActive(item.url) })}

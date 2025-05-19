@@ -13,6 +13,16 @@ import { Badge } from "@/components/ui/badge";
 import { Eye, Edit, Star } from "lucide-react";
 import Link from "next/link";
 import { GetReviews } from "@/requests/get/reviews/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 interface ReviewCardProps {
   review: GetReviews.ReviewListItem;
@@ -20,6 +30,8 @@ interface ReviewCardProps {
 }
 
 export function ReviewCard({ review, onDelete }: ReviewCardProps) {
+  const [open, setOpen] = useState(false);
+
   return (
     <Card className="overflow-hidden border hover:shadow-md transition-all animate-fade-in">
       <CardHeader className="pb-2">
@@ -67,14 +79,37 @@ export function ReviewCard({ review, onDelete }: ReviewCardProps) {
             </Link>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-destructive hover:text-destructive hover:bg-destructive/10"
-            onClick={() => onDelete(review._id)}
-          >
-            Delete
-          </Button>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              >
+                Delete
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. Are you sure you want to
+                  permanently delete this review from our servers?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    onDelete(review._id);
+                    setOpen(false);
+                  }}
+                >
+                  Confirm
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </CardFooter>
     </Card>

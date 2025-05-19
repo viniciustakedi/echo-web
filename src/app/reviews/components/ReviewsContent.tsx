@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Text } from "@/components/ui/text";
 import { Title } from "@/components/ui/title";
 import { GetReviews } from "@/requests/get/reviews/types";
+import { toast } from "sonner";
 
 export default function ReviewsContent() {
   const router = useRouter();
@@ -22,7 +23,15 @@ export default function ReviewsContent() {
   useEffect(() => {
     const fetchReviews = async () => {
       const response = await getReviews(page, limit);
-      setReviews(response);
+
+      if (response === 404) {
+        toast.error("You don't have any reviews", {
+          description:
+            "Don't worrie! Start to rating to build your reviews portfolio.",
+        });
+      }
+
+      setReviews(Array.isArray(response) ? response : null);
     };
 
     fetchReviews();

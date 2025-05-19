@@ -14,6 +14,15 @@ import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { useTags } from "@/hooks/use-tags";
 import { cn } from "@/lib/utils";
 import { GetReviews } from "@/requests/get/reviews/types";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ReviewEditorProps {
   initialData?: Partial<GetReviews.ReviewByKey>;
@@ -26,7 +35,7 @@ export function ReviewEditor({
   onSave,
   isLoading = false,
 }: ReviewEditorProps) {
-  const [tagsCtx] = useTags();
+  const { tags: tagsCtx } = useTags();
   const [activeTab, setActiveTab] = useState("edit");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<{ name: string; _id: string }[]>(
@@ -207,24 +216,24 @@ export function ReviewEditor({
           Tags
         </Label>
         <div className="flex gap-2 items-center">
-          <select
-            id="tags"
+          <Select
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            className={cn(
-              "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-              "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-              "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-              "bg-white"
-            )}
+            onValueChange={(value) => setTagInput(value)}
           >
-            <option value="">Select a tag</option>
-            {tagsCtx?.map((tag: { name: string; _id: string }) => (
-              <option key={tag._id} value={tag._id}>
-                {tag.name}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a tag" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Tags</SelectLabel>
+                {tagsCtx?.map((tag: { name: string; _id: string }) => (
+                  <SelectItem key={tag._id} value={tag._id}>
+                    {tag.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <Button
             type="button"
             onClick={() => {
