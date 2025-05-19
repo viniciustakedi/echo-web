@@ -9,10 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
-import { GetRequests } from "@/requests/get/types";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 interface ReviewListProps {
-  reviews: GetRequests.Review.ReviewListItem[];
+  reviews: GetReviews.ReviewListItem[];
   onDeleteReview: (id: string) => void;
 }
 

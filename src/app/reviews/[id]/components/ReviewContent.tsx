@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { getReviewByKey } from "@/requests/get";
-import { GetRequests } from "@/requests/get/types";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 interface Props {
   id: string;
 }
 
 export default function ReviewContent({ id }: Props) {
-  const [review, setReview] = useState<GetRequests.Review.ReviewByKey | null>(
+  const [review, setReview] = useState<GetReviews.ReviewByKey | null>(
     null
   );
 

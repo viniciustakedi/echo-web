@@ -6,16 +6,16 @@ import { toast } from "sonner";
 
 import { ReviewDetail } from "../../components/ReviewDetail";
 
-import { GetRequests } from "@/requests/get/types";
 import { getReviewByKey } from "@/requests/get";
 import { ScreenContentDefault } from "../../components/ScreenContentDefault";
+import { GetReviews } from "@/requests/get/reviews/types";
 
 const ViewReview = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [review, setReview] = useState<GetRequests.Review.ReviewByKey | null>(
+  const [review, setReview] = useState<GetReviews.ReviewByKey | null>(
     null
   );
 
@@ -36,7 +36,7 @@ const ViewReview = () => {
     };
 
     fetchReview();
-  }, [id, toast]);
+  }, [id, router]);
 
   if (isLoading) {
     return <div className="text-center py-12">Loading...</div>;

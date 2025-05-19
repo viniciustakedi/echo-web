@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { signIn } from "@/requests/post";
 
 const PUBLIC_KEY = process.env.JWT_VERIFYING_PUBLIC_KEY!;
-const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET!;
 
 declare module "next-auth" {
   interface Session {
@@ -60,12 +59,11 @@ const authHandler = NextAuth({
   pages: {
     signIn: "/sign-in",
     error: "/sign-in",
-    signOut: "/",
+    signOut: "/sign-in",
     newUser: "/",
   },
   jwt: {
-    maxAge: 7 * 24 * 60 * 60,
-    secret: NEXTAUTH_SECRET,
+    maxAge: 604800, // Same API time
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -83,8 +81,6 @@ const authHandler = NextAuth({
       return session;
     },
   },
-
-  secret: NEXTAUTH_SECRET,
 });
 
 // Explicitly export the handler for GET and POST methods

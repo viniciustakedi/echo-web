@@ -7,11 +7,11 @@ import { X } from "lucide-react";
 import { StarRating } from "./star-rating";
 import { PriceRating } from "./price-rating";
 import Link from "next/link";
-import { GetRequests } from "@/requests/get/types";
+import { GetMaps } from "@/requests/get/map-markers/types";
 
 interface CardTipProps {
   isOpen: boolean;
-  data: GetRequests.Map.GetDetailedMapMarkerResponse;
+  data: GetMaps.MapMarkerDetailed;
   onClose: () => void;
 }
 
@@ -46,7 +46,10 @@ export default function CardTip({ data, isOpen, onClose }: CardTipProps) {
                 <PriceRating rating={data.review.priceRating} />
               </div>
               {data.review.tags.map((tag) => (
-                <div key={tag.name} className="flex flex-wrap items-center mt-2 gap-1">
+                <div
+                  key={tag.name}
+                  className="flex flex-wrap items-center mt-2 gap-1"
+                >
                   <div className="flex bg-[#323232] rounded-full w-auto items-center justify-center px-2 py-1">
                     <Text className="text-sm text-white">{tag.name}</Text>
                   </div>

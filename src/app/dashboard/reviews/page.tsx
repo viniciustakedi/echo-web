@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,23 +11,35 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ReviewList } from "../components/ReviewList";
 
-import { GetRequests } from "@/requests/get/types";
 import { getReviews } from "@/requests/get";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
+import { GetReviews } from "@/requests/get/reviews/types";
+import { signOut, useSession } from "next-auth/react";
+import { deleteReview } from "@/requests/delete";
 
 const Reviews = () => {
+  const { data: session, status } = useSession({ required: true });
+
+  const [_, setIsLoading] = useState(false);
   const [page] = useState(1);
   const [limit] = useState(10);
-  const [reviews, setReviews] = useState<
-    GetRequests.Review.ReviewListItem[] | null
-  >(null);
+  const [reviews, setReviews] = useState<GetReviews.ReviewListItem[] | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchReviews = async () => {
       const response = await getReviews(page, limit);
-      setReviews(response);
-    };
 
+      if (response === 404) {
+        toast.error("You don't have any reviews", {
+          description:
+            "Don't worrie! Start to rating to build your reviews portfolio.",
+        });
+      }
+
+      setReviews(Array.isArray(response) ? response : null);
+    };
     fetchReviews();
   }, [page, limit]);
 
@@ -36,13 +51,40 @@ const Reviews = () => {
     );
   }
 
-  const handleDeleteReview = (id: string) => {
+  const handleDeleteReview = async (id: string) => {
     setReviews(reviews.filter((review) => review._id !== id));
+    setIsLoading(true);
 
-    toast.success("Review deleted", {
-      description: "The review has been successfully deleted.",
-    });
+    try {
+      const apiToken = (session as any).apiToken as string;
+      const response = await deleteReview(id, apiToken);
+
+      if (response.status === 401) {
+        signOut({ redirect: false });
+      }
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      toast.success("Review deleted", {
+        description: "The review has been successfully deleted.",
+      });
+    } catch (error) {
+      toast.error("Error in delete review!", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "There was an error creating your review.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (status === "loading") {
+    return <div className="text-center py-12">Loading...</div>;
+  }
 
   return (
     <ScreenContentDefault>
