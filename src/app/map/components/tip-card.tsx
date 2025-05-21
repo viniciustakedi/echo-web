@@ -40,7 +40,11 @@ export default function CardTip({ data, isOpen, onClose }: CardTipProps) {
                 </Text>
               </div>
               <div className="flex  items-center mt-1">
-                <Text className="text-sm text-gray-600 mr-1">4.5</Text>
+                <Text className="text-sm text-gray-600 mr-1">
+                  {Number.isInteger(data.review.rating)
+                    ? `${data.review.rating}.0`
+                    : data.review.rating}
+                </Text>
                 <StarRating rating={data.review.rating} />
                 <Text className="text-gray-300 pl-[4px] pr-[3px]">•</Text>
                 <PriceRating rating={data.review.priceRating} />
