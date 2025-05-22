@@ -54,7 +54,7 @@ export default function CardTip({ data, isOpen, onClose }: CardTipProps) {
                   key={tag.name}
                   className="flex flex-wrap items-center mt-2 gap-1"
                 >
-                  <div className="flex bg-[#323232] rounded-full w-auto items-center justify-center px-2 py-1">
+                  <div className="flex bg-[#323232] rounded-full items-center justify-center px-2 py-1">
                     <Text className="text-sm text-white">{tag.name}</Text>
                   </div>
                 </div>

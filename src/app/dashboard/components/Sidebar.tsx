@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Book, Edit, LayoutDashboard, LogOut } from "lucide-react";
+import { Book, Edit, LayoutDashboard, LogOut, MapPin } from "lucide-react";
 import Link from "next/link";
 
 export function AppSidebar() {
@@ -20,7 +20,7 @@ export function AppSidebar() {
   const navItems = [
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
     { title: "Reviews", url: "/dashboard/reviews", icon: Book },
-    { title: "New Review", url: "/dashboard/new-review", icon: Edit },
+    { title: "Map Markers", url: "/dashboard/map-markers", icon: MapPin },
     { title: "Log Out", url: "logout", icon: LogOut },
   ];
 

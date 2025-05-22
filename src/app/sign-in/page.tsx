@@ -13,10 +13,9 @@ const SignInPage = async () => {
   }
 
   return (
-    <div className="base__div">
-      <div className="base__div__page">
+    <>
         <Menu />
-        <main className="h-full flex flex-col md:flex-row">
+        <main className="h-screen flex flex-col md:flex-row">
           {/* Left Side - Form */}
           <div className="flex-1 flex flex-col items-center justify-center p-6 bg-travel-gradient md:w-1/2">
             <div className="w-full max-w-md mx-auto">
@@ -72,8 +71,7 @@ const SignInPage = async () => {
             </div>
           </div>
         </main>
-      </div>
-    </div>
+    </>
   );
 };
 

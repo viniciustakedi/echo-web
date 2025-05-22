@@ -3,8 +3,8 @@
 export namespace GetMaps {
   export interface MapMarker {
     _id: string;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     review: {
       _id: string;
       thumbnail: string;
@@ -14,8 +14,8 @@ export namespace GetMaps {
 
   export interface MapMarkerDetailed {
     _id: string;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     isDeleted: boolean;
     updatedAt: string;
     createdAt: string;
