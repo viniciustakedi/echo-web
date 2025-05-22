@@ -7,7 +7,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-import { ReviewEditor } from "../../components/ReviewEditor";
+import { ReviewEditor } from "../../components/review/ReviewEditor";
 
 import { getReviewByKey } from "@/requests/get";
 import { ScreenContentDefault } from "../../components/ScreenContentDefault";
@@ -15,9 +15,10 @@ import { GetReviews } from "@/requests/get/reviews/types";
 import { updateReview } from "@/requests/patch";
 
 const EditReview = () => {
+  const { data: session } = useSession({ required: true });
+
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const { data: session } = useSession({ required: true });
 
   const [isLoading, setIsLoading] = useState(false);
   const [reviewData, setReviewData] = useState<GetReviews.ReviewByKey | null>(

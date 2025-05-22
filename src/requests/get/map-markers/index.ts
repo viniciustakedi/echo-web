@@ -2,25 +2,22 @@ import { GetMaps } from "./types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const getMapMarkers = async (): Promise<GetMaps.MapMarker[]> => {
-  try {
-    const response = await fetch(`${BASE_URL}/map-markers`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+export const getMapMarkers = async ({
+  page,
+  limit,
+}: {
+  limit?: number;
+  page?: number;
+}): Promise<GetMaps.MapMarker[]> => {
+  const response = await fetch(`${BASE_URL}/map-markers`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-
-    const result: GetMaps.Response = await response.json();
-    return result.data as GetMaps.MapMarker[];
-  } catch (error) {
-    console.error("Error fetching map markers:", error);
-    throw error;
-  }
+  const result: GetMaps.Response = await response.json();
+  return result.data as GetMaps.MapMarker[];
 };
 
 export const getMapMarkerById = async (

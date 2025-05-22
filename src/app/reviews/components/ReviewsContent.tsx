@@ -47,7 +47,7 @@ export default function ReviewsContent() {
 
   return (
     <div className="flex flex-col items-center mt-32 w-full h-full p-4">
-      <div className="flex flex-col items-start mb-8 w-full max-w-3xl">
+      <div className="flex flex-col items-start w-full max-w-3xl">
         <h1 className="text-4xl font-bold mb-4">Last Reviews</h1>
         <hr className="border-gray-300 w-full" />
       </div>
@@ -55,7 +55,7 @@ export default function ReviewsContent() {
         {reviews.map((review) => (
           <div key={review._id}>
             <div
-              className="flex flex-row justify-between items-center mb-8 cursor-pointer gap-4"
+              className="flex flex-row justify-between items-center my-5 cursor-pointer gap-4"
               onClick={() => router.push(`/reviews/${review.friendlyUrl}`)}
             >
               <div>
@@ -90,7 +90,7 @@ export default function ReviewsContent() {
                   alt={review.headline}
                   width={1200}
                   height={1200}
-                  className="w-56 h-auto rounded-lg mb-4 object-cover"
+                  className="w-56 h-36 rounded-lg mb-4 object-cover"
                 />
               </div>
             </div>

@@ -55,7 +55,7 @@ export default function MapViewer() {
 
   React.useEffect(() => {
     const fetchReview = async () => {
-      const response = await getMapMarkers();
+      const response = await getMapMarkers({});
       setMapMarkers(response);
     };
 
@@ -131,7 +131,7 @@ export default function MapViewer() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <Text>{marker.review.headline}</Text>
+                  <Text className="text-white">{marker.review.headline}</Text>
                 </TooltipContent>
               </Tooltip>
             </Marker>

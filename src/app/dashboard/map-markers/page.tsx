@@ -9,38 +9,31 @@ import { toast } from "sonner";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { ReviewList } from "../components/review/ReviewList";
 
-import { getReviews } from "@/requests/get";
+import { getMapMarkers } from "@/requests/get";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
-import { GetReviews } from "@/requests/get/reviews/types";
 import { signOut, useSession } from "next-auth/react";
-import { deleteReview } from "@/requests/delete";
-import { useReviews } from "@/hooks/use-reviews";
+import { GetMaps } from "@/requests/get/map-markers/types";
+import { deleteMapMarker } from "@/requests/delete/map-markers";
+import { MapMarkerList } from "../components/map-marker/MapMarkerList";
 
-const Reviews = () => {
+const MapMarkers = () => {
   const { data: session, status } = useSession({ required: true });
 
-  const { reviews, setReviews } = useReviews();
-
+  const [_, setIsLoading] = useState(false);
   const [page] = useState(1);
   const [limit] = useState(10);
+  const [mapMakers, setMapMarkers] = useState<GetMaps.MapMarker[] | null>(null);
 
   useEffect(() => {
-    // TO-DO: Create a new function like fetchNextPage in our hook useReviews
-    // const fetchReviews = async () => {
-    //   const response = await getReviews(page, limit);
-    //   if (response === 404) {
-    //     toast.error("You don't have any reviews", {
-    //       description:
-    //         "Don't worrie! Start to rating to build your reviews portfolio.",
-    //     });
-    //   }
-    //   setReviews(Array.isArray(response) ? response : null);
-    // };
+    const fetchMapMarkers = async () => {
+      const response = await getMapMarkers({ page, limit });
+      setMapMarkers(Array.isArray(response) ? response : null);
+    };
+    fetchMapMarkers();
   }, [page, limit]);
 
-  if (!reviews || reviews.length === 0) {
+  if (!mapMakers || mapMakers.length === 0) {
     return (
       <div className="flex items-center justify-center h-screen">
         <p className="text-gray-500">Loading...</p>
@@ -48,12 +41,13 @@ const Reviews = () => {
     );
   }
 
-  const handleDeleteReview = async (id: string) => {
-    setReviews(reviews.filter((review) => review._id !== id));
+  const handleDeleteMapMarker = async (id: string) => {
+    setMapMarkers(mapMakers.filter((mapMaker) => mapMaker._id !== id));
+    setIsLoading(true);
 
     try {
       const apiToken = (session as any).apiToken as string;
-      const response = await deleteReview(id, apiToken);
+      const response = await deleteMapMarker(id, apiToken);
 
       if (response.status === 401) {
         signOut({ redirect: false });
@@ -63,16 +57,18 @@ const Reviews = () => {
         throw new Error();
       }
 
-      toast.success("Review deleted", {
-        description: "The review has been successfully deleted.",
+      toast.success("Map Marker deleted", {
+        description: "The map marker has been successfully deleted.",
       });
     } catch (error) {
-      toast.error("Error in delete review!", {
+      toast.error("Error in delete map marker!", {
         description:
           error instanceof Error
             ? error.message
-            : "There was an error creating your review.",
+            : "There was an error creating your map marker.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -84,20 +80,23 @@ const Reviews = () => {
     <ScreenContentDefault>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Reviews</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Map Markers</h1>
 
           <Button asChild>
-            <Link href="/dashboard/new-review">
+            <Link href="/dashboard/new-map-marker">
               <Edit className="mr-2 h-4 w-4" />
-              New Review
+              New Map Marker
             </Link>
           </Button>
         </div>
 
-        <ReviewList reviews={reviews} onDeleteReview={handleDeleteReview} />
+        <MapMarkerList
+          mapMarkers={mapMakers}
+          onDeleteMapMarker={handleDeleteMapMarker}
+        />
       </div>
     </ScreenContentDefault>
   );
 };
 
-export default Reviews;
+export default MapMarkers;

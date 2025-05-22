@@ -117,14 +117,6 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-.base__div {
-  @apply flex items-center justify-center h-screen w-full bg-gradient-to-b from-[#323232] to-[#000] p-5;
-}
-
-.base__div__page {
-  @apply w-full h-full bg-white rounded-4xl overflow-y-scroll;
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;

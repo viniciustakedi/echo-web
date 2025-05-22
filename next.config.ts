@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       "images.unsplash.com",
       "unsplash.com",
       "randomuser.me",
+      "www.estadao.com.br"
     ],
   },
 };

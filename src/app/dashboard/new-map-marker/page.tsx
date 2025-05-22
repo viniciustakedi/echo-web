@@ -5,13 +5,13 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { ReviewEditor } from "../components/review/ReviewEditor";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
-import { createReview } from "@/requests/post";
 import { signOut, useSession } from "next-auth/react";
-import { GetReviews } from "@/requests/get/reviews/types";
+import { createMapMarker } from "@/requests/post/map-markers";
+import { PostMapMarker } from "@/requests/post/map-markers/types";
+import { MapMarkerEditor } from "../components/map-marker/MapMarkerEditor";
 
-const NewReview = () => {
+const NewMapMarker = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -25,12 +25,12 @@ const NewReview = () => {
     return null;
   }
 
-  const handleSaveReview = async (data: GetReviews.ReviewByKey) => {
+  const handleSaveMapMarker = async (data: PostMapMarker.Create) => {
     setIsLoading(true);
 
     try {
       const apiToken = (session as any).apiToken as string;
-      const response = await createReview(data, apiToken);
+      const response = await createMapMarker(data, apiToken);
 
       if (response.status === 401) {
         signOut({ redirect: false });
@@ -40,36 +40,36 @@ const NewReview = () => {
         throw new Error();
       }
 
-      toast.success("Review created", {
-        description: "Your review has been successfully created.",
+      toast.success("Map marker created", {
+        description: "Your map marker been successfully created.",
       });
     } catch {
       toast.error("Error!", {
-        description: "There was an error creating your review.",
+        description: "There was an error creating your map marker.",
       });
     } finally {
       setIsLoading(false);
     }
 
-    router.push("/dashboard/reviews");
+    router.push("/dashboard/map-markers");
   };
 
   return (
     <ScreenContentDefault>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">New Review</h1>
+          <h1 className="text-3xl font-bold tracking-tight">New Map Marker</h1>
           <p className="text-muted-foreground">
-            Create a new restaurant review with Markdown support.
+            Create a map marker based in a review.
           </p>
         </div>
 
         <div className="bg-card rounded-lg border p-6 shadow-sm">
-          <ReviewEditor onSave={handleSaveReview} isLoading={isLoading} />
+          <MapMarkerEditor onSave={handleSaveMapMarker} isLoading={isLoading} />
         </div>
       </div>
     </ScreenContentDefault>
   );
 };
 
-export default NewReview;
+export default NewMapMarker;

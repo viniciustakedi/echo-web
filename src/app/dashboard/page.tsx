@@ -13,44 +13,21 @@ import { Book, Edit, Star, MapPin, ArrowRight } from "lucide-react";
 // Demo data
 import { toast } from "sonner";
 import Link from "next/link";
-import { ReviewCard } from "./components/ReviewCard";
+import { ReviewCard } from "./components/review/ReviewCard";
 import { getReviews } from "@/requests/get";
 import { ScreenContentDefault } from "./components/ScreenContentDefault";
 import { GetReviews } from "@/requests/get/reviews/types";
 import { deleteReview } from "@/requests/delete";
+import { useReviews } from "@/hooks/use-reviews";
 
 const Dashboard = () => {
   const { data: session, status } = useSession({ required: true });
-
-  const [_, setIsLoading] = useState(false);
-  const [page] = useState(1);
-  const [limit] = useState(10);
-  const [reviews, setReviews] = useState<GetReviews.ReviewListItem[] | null>(
-    null
-  );
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      const response = await getReviews(page, limit);
-
-      if (response === 404) {
-        toast.error("You don't have any reviews", {
-          description:
-            "Don't worrie! Start to rating to build your reviews portfolio.",
-        });
-      }
-
-      setReviews(Array.isArray(response) ? response : null);
-    };
-
-    fetchReviews();
-  }, [page, limit]);
+  const { reviews, setReviews } = useReviews();
 
   if (status === "loading") return <p>Loading…</p>;
 
   const handleDeleteReview = async (id: string) => {
     setReviews(reviews ? reviews.filter((review) => review._id !== id) : null);
-    setIsLoading(true);
 
     try {
       const apiToken = (session as any).apiToken as string;
@@ -74,8 +51,6 @@ const Dashboard = () => {
             ? error.message
             : "There was an error creating your review.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
