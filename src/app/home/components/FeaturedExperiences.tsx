@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 
 const experiences = [
   {
@@ -10,7 +11,7 @@ const experiences = [
     title: "Guided Tour of the Louvre Museum",
     location: "Paris, France",
     image:
-      "https://images.unsplash.com/photo-1544298903-35eee5e10b41?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560425946-7d5830202765?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     price: 59,
     duration: "3 hours",
     rating: 4.8,
@@ -46,7 +47,7 @@ const experiences = [
     title: "Helicopter Tour of Grand Canyon",
     location: "Las Vegas, USA",
     image:
-      "https://images.unsplash.com/photo-1544013774-fcf4513c5dc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1495554698253-681539e9ea84?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     price: 299,
     duration: "1.5 hours",
     rating: 4.9,
@@ -100,8 +101,8 @@ const FeaturedExperiences = () => {
                   width={1500}
                   height={1000}
                 />
-                <div className="absolute top-0 left-0 px-3 py-1 m-3 text-xs font-semibold text-white bg-green-600 rounded-full">
-                  {experience.category}
+                <div className="absolute top-0 left-0 p-3">
+                  <Badge variant="secondary">{experience.category}</Badge>
                 </div>
               </div>
 

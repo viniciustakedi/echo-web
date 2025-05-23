@@ -8,8 +8,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { MapPin } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 
 const destinations = [
   {
@@ -57,15 +58,6 @@ const destinations = [
     rating: 4.8,
     reviews: 7654,
   },
-  {
-    id: 6,
-    name: "Cape Town",
-    country: "South Africa",
-    image:
-      "https://unsplash.com/photos/an-aerial-view-of-the-city-of-cape-town-and-lions-head-mountain-in-south-africa-byUDvQhsh4U",
-    rating: 4.7,
-    reviews: 6543,
-  },
 ];
 
 const PopularDestinations = () => {
@@ -100,8 +92,8 @@ const PopularDestinations = () => {
                       width={1200}
                       height={800}
                     />
-                    <div className="absolute top-0 right-0 p-2 m-2 text-xs font-bold text-white bg-green-600 rounded-full">
-                      {destination.rating} ★
+                    <div className="absolute top-0 right-0 p-2 m-2">
+                      <Badge variant="secondary">{destination.rating} <Star className="fill-white"/></Badge>
                     </div>
                   </div>
 
@@ -130,7 +122,7 @@ const PopularDestinations = () => {
         </Carousel>
 
         <div className="flex justify-center mt-8">
-          <Button className="md:hidden bg-travel-blue hover:bg-travel-blue/90">
+          <Button className="md:hidden bg-green-600 hover:bg-travel-blue/90">
             View All Destinations
           </Button>
         </div>
