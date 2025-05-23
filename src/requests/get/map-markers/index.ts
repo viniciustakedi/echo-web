@@ -9,12 +9,15 @@ export const getMapMarkers = async ({
   limit?: number;
   page?: number;
 }): Promise<GetMaps.MapMarker[]> => {
-  const response = await fetch(`${BASE_URL}/map-markers`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `${BASE_URL}/map-markers?limit${limit ?? 20}&page${page ?? 1}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   const result: GetMaps.Response = await response.json();
   return result.data as GetMaps.MapMarker[];

@@ -12,7 +12,7 @@ mapMarkersAtom.onMount = (setAtom) => {
     return;
   }
 
-  getMapMarkers({ page: 1, limit: 10 }).then((fetched) => {
+  getMapMarkers({ page: 1, limit: 15 }).then((fetched) => {
     _fetchedMapMarkers = Array.isArray(fetched) ? fetched : [];
     setAtom(_fetchedMapMarkers);
   });

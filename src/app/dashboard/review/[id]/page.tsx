@@ -10,9 +10,10 @@ import { getReviewByKey } from "@/requests/get";
 import { ScreenContentDefault } from "../../components/ScreenContentDefault";
 import { GetReviews } from "@/requests/get/reviews/types";
 import { useSession } from "next-auth/react";
+import Loading from "@/components/loading";
 
 const ViewReview = () => {
-  const { data: session, status } = useSession({ required: true });
+  const { status } = useSession({ required: true });
 
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
@@ -39,16 +40,12 @@ const ViewReview = () => {
     fetchReview();
   }, [id, router]);
 
-  if (isLoading) {
-    return <div className="text-center py-12">Loading...</div>;
-  }
-
   if (!review) {
     return null;
   }
 
-  if (status === "loading") {
-    return <div className="text-center py-12">Loading...</div>;
+  if (status === "loading" || isLoading) {
+    return <Loading />;
   }
 
   return (

@@ -8,8 +8,9 @@ import { useRouter } from "next/navigation";
 import { ReviewEditor } from "../components/review/ReviewEditor";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
 import { createReview } from "@/requests/post";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { GetReviews } from "@/requests/get/reviews/types";
+import Loading from "@/components/loading";
 
 const NewReview = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,13 +18,7 @@ const NewReview = () => {
 
   const { data: session, status } = useSession({ required: true });
 
-  if (status === "loading") return <p>Loading…</p>;
-
-  if (!session || !(session as any).apiToken) {
-    signOut({ redirect: false });
-    router.replace("/sign-in");
-    return null;
-  }
+  if (status === "loading" || isLoading) return <Loading />;
 
   const handleSaveReview = async (data: GetReviews.ReviewByKey) => {
     setIsLoading(true);
@@ -31,10 +26,6 @@ const NewReview = () => {
     try {
       const apiToken = (session as any).apiToken as string;
       const response = await createReview(data, apiToken);
-
-      if (response.status === 401) {
-        signOut({ redirect: false });
-      }
 
       if (!response.ok) {
         throw new Error();
