@@ -3,7 +3,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +13,7 @@ import { GetMaps } from "@/requests/get/map-markers/types";
 import { MapMarkerEditor } from "../../components/map-marker/MapMarkerEditor";
 import { updateMapMarker } from "@/requests/patch/map-markers";
 import { PatchMaps } from "@/requests/patch/map-markers/types";
+import Loading from "@/components/loading";
 
 const EditMapMarker = () => {
   const { data: session } = useSession({ required: true });
@@ -54,10 +55,6 @@ const EditMapMarker = () => {
 
       const response = await updateMapMarker(mapMarkerData._id, data, apiToken);
 
-      if (response.status === 401) {
-        signOut({ redirect: false });
-      }
-
       if (!response.ok) {
         throw new Error((await response.json()).message);
       }
@@ -84,7 +81,7 @@ const EditMapMarker = () => {
   };
 
   if (!mapMarkerData) {
-    return <div className="text-center py-12">Loading...</div>;
+    return <Loading />;
   }
 
   return (

@@ -1,3 +1,5 @@
+import { signOut } from "next-auth/react";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const deleteReview = async (id: string, accessToken: string) => {
@@ -9,10 +11,9 @@ export const deleteReview = async (id: string, accessToken: string) => {
     },
   });
 
-  // if (response.status === 401) {
-  //   logout();
-  //   throw new Error("Session expired, redirecting to login…");
-  // }
+  if (response.status === 401) {
+    await signOut({ redirect: true });
+  }
 
   return response;
 };

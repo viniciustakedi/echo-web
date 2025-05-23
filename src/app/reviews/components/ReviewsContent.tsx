@@ -10,6 +10,7 @@ import { Text } from "@/components/ui/text";
 import { Title } from "@/components/ui/title";
 import { GetReviews } from "@/requests/get/reviews/types";
 import { toast } from "sonner";
+import Loading from "@/components/loading";
 
 export default function ReviewsContent() {
   const router = useRouter();
@@ -38,11 +39,7 @@ export default function ReviewsContent() {
   }, [page, limit]);
 
   if (!reviews || reviews.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
