@@ -11,6 +11,7 @@ import { Title } from "@/components/ui/title";
 import { GetReviews } from "@/requests/get/reviews/types";
 import { toast } from "sonner";
 import Loading from "@/components/loading";
+import { Badge } from "@/components/ui/badge";
 
 export default function ReviewsContent() {
   const router = useRouter();
@@ -64,12 +65,9 @@ export default function ReviewsContent() {
                 </Text>
                 <div className="flex flex-wrap items-center gap-1 mt-2 mb-4">
                   {review.tags.map((tag) => (
-                    <div
-                      key={tag.name}
-                      className="flex bg-[#323232] rounded-full w-auto items-center justify-center px-2 py-1"
-                    >
-                      <Text className="text-sm text-white">{tag.name}</Text>
-                    </div>
+                    <Badge key={tag.name} variant="secondary">
+                      {tag.name}
+                    </Badge>
                   ))}
                 </div>
                 <p className="text-gray-500">
@@ -87,7 +85,7 @@ export default function ReviewsContent() {
                   alt={review.headline}
                   width={1200}
                   height={1200}
-                  className="w-56 h-36 rounded-lg mb-4 object-cover"
+                  className="md:w-56 md:h-36 w-auto h-24 rounded-lg mb-4 object-cover"
                 />
               </div>
             </div>
