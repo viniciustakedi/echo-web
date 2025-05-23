@@ -3,8 +3,8 @@ import { Loader2 } from "lucide-react";
 import { Text } from "../ui/text";
 
 const Loading: React.FC = () => (
-  <div className="flex flex-col items-center justify-center h-screen bg-muted">
-    <Loader2 className="w-12 h-12 text-primary animate-spin" />
+  <div className="flex flex-col items-center justify-center w-full h-screen bg-muted fixed top-0 left-0">
+    <Loader2 className="w-12 h-12 animate-spin text-green-600" />
     <Text className="mt-2">Loading...</Text>
   </div>
 );
