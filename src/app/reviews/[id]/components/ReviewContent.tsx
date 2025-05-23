@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { getReviewByKey } from "@/requests/get";
 import { GetReviews } from "@/requests/get/reviews/types";
+import Loading from "@/components/loading";
 
 interface Props {
   id: string;
 }
 
 export default function ReviewContent({ id }: Props) {
-  const [review, setReview] = useState<GetReviews.ReviewByKey | null>(
-    null
-  );
+  const [review, setReview] = useState<GetReviews.ReviewByKey | null>(null);
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -24,11 +23,7 @@ export default function ReviewContent({ id }: Props) {
   }, [id]);
 
   if (!review) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

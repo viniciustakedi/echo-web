@@ -34,7 +34,7 @@ export function ReviewCard({ review, onDelete }: ReviewCardProps) {
 
   return (
     <Card className="overflow-hidden border hover:shadow-md transition-all animate-fade-in">
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 h-auto">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg">{review.headline}</CardTitle>
           <div className="flex items-center text-amber-500">

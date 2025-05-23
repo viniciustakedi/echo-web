@@ -5,11 +5,14 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { ScreenContentDefault } from "../components/ScreenContentDefault";
-import { signOut, useSession } from "next-auth/react";
-import { createMapMarker } from "@/requests/post/map-markers";
+import { useSession } from "next-auth/react";
+
 import { PostMapMarker } from "@/requests/post/map-markers/types";
+import { createMapMarker } from "@/requests/post/map-markers";
+
 import { MapMarkerEditor } from "../components/map-marker/MapMarkerEditor";
+import { ScreenContentDefault } from "../components/ScreenContentDefault";
+import Loading from "@/components/loading";
 
 const NewMapMarker = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,13 +20,7 @@ const NewMapMarker = () => {
 
   const { data: session, status } = useSession({ required: true });
 
-  if (status === "loading") return <p>Loading…</p>;
-
-  if (!session || !(session as any).apiToken) {
-    signOut({ redirect: false });
-    router.replace("/sign-in");
-    return null;
-  }
+  if (status === "loading" || isLoading) return <Loading/>;
 
   const handleSaveMapMarker = async (data: PostMapMarker.Create) => {
     setIsLoading(true);
@@ -31,10 +28,6 @@ const NewMapMarker = () => {
     try {
       const apiToken = (session as any).apiToken as string;
       const response = await createMapMarker(data, apiToken);
-
-      if (response.status === 401) {
-        signOut({ redirect: false });
-      }
 
       if (!response.ok) {
         throw new Error();

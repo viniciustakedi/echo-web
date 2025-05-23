@@ -1,5 +1,9 @@
 "use client";
 
+import { Book, LayoutDashboard, LogOut, MapPin } from "lucide-react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+
 import {
   Sidebar,
   SidebarContent,
@@ -11,8 +15,6 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Book, Edit, LayoutDashboard, LogOut, MapPin } from "lucide-react";
-import Link from "next/link";
 
 export function AppSidebar() {
   const currentPath = location.pathname;
@@ -24,9 +26,7 @@ export function AppSidebar() {
     { title: "Log Out", url: "logout", icon: LogOut },
   ];
 
-  // Helper functions for active state and CSS classes
-  const isActive = (path: string) =>
-    currentPath === path || currentPath.startsWith(path + "/dashboard");
+  const isActive = (path: string): boolean => currentPath === path;
 
   const getNavClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -52,21 +52,32 @@ export function AppSidebar() {
 
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    {/* TO-DO: Create a button to call the function signOut*/}
-                    <Link
-                      href={item.url}
-                      className={getNavClass({ isActive: isActive(item.url) })}
-                      onClick={(e) => e.preventDefault}
-                    >
-                      <item.icon className={`h-5 w-5 mr-2`} />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navItems.map((item) => {
+                const href = item.url === "logout" ? "/sign-in" : item.url;
+
+                const handleClick = () => {
+                  if (item.url === "logout") {
+                    signOut({ redirect: true });
+                  }
+                };
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link
+                        href={href}
+                        className={getNavClass({
+                          isActive: isActive(item.url),
+                        })}
+                        onClick={handleClick}
+                      >
+                        <item.icon className={`h-5 w-5 mr-2`} />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

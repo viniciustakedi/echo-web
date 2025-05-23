@@ -93,7 +93,7 @@ export function MapMarkerEditor({
     if (reviewData) {
       setReview(reviewData);
     }
-  }, [reviewId, initialData]);
+  }, [reviewId, initialData, reviews]);
 
   // const [mapMarkers, setMapMarkers] = useState<GetMaps.MapMarker[] | null>(
   //   null
@@ -218,16 +218,19 @@ export function MapMarkerEditor({
 
       <div className="flex justify-between">
         <div>
-
-        <Link href="https://www.itilog.com" target="_blank">
-          <Button type="button" variant="link">Find coords</Button>
-        </Link>
+          <Link href="https://www.itilog.com" target="_blank">
+            <Button type="button" variant="link">
+              Find coords
+            </Button>
+          </Link>
         </div>
         <div>
-        <Button variant="outline" className="mr-2">Cancel</Button>
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Saving..." : "Save Map Marker"}
-        </Button>
+          <Button variant="outline" className="mr-2">
+            Cancel
+          </Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Saving..." : "Save Map Marker"}
+          </Button>
         </div>
       </div>
     </form>

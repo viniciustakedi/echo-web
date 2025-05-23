@@ -3,7 +3,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +13,7 @@ import { getReviewByKey } from "@/requests/get";
 import { ScreenContentDefault } from "../../components/ScreenContentDefault";
 import { GetReviews } from "@/requests/get/reviews/types";
 import { updateReview } from "@/requests/patch";
+import Loading from "@/components/loading";
 
 const EditReview = () => {
   const { data: session } = useSession({ required: true });
@@ -55,10 +56,6 @@ const EditReview = () => {
 
       const response = await updateReview(reviewData._id, data, apiToken);
 
-      if (response.status === 401) {
-        signOut({ redirect: false });
-      }
-
       if (!response.ok) {
         throw new Error((await response.json()).message);
       }
@@ -85,7 +82,7 @@ const EditReview = () => {
   };
 
   if (!reviewData) {
-    return <div className="text-center py-12">Loading...</div>;
+    return <Loading />;
   }
 
   return (

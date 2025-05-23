@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 "use client";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useEffect, useState } from "react";
 import { Edit } from "lucide-react";
@@ -11,12 +10,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ReviewList } from "../components/review/ReviewList";
 
-import { getReviews } from "@/requests/get";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
-import { GetReviews } from "@/requests/get/reviews/types";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { deleteReview } from "@/requests/delete";
 import { useReviews } from "@/hooks/use-reviews";
+import Loading from "@/components/loading";
 
 const Reviews = () => {
   const { data: session, status } = useSession({ required: true });
@@ -41,11 +39,7 @@ const Reviews = () => {
   }, [page, limit]);
 
   if (!reviews || reviews.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   const handleDeleteReview = async (id: string) => {
@@ -54,10 +48,6 @@ const Reviews = () => {
     try {
       const apiToken = (session as any).apiToken as string;
       const response = await deleteReview(id, apiToken);
-
-      if (response.status === 401) {
-        signOut({ redirect: false });
-      }
 
       if (!response.ok) {
         throw new Error();
@@ -77,7 +67,7 @@ const Reviews = () => {
   };
 
   if (status === "loading") {
-    return <div className="text-center py-12">Loading...</div>;
+    return <Loading />;
   }
 
   return (

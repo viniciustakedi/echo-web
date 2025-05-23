@@ -1,30 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Book, Edit, Star, MapPin, ArrowRight } from "lucide-react";
-
-// Demo data
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import Link from "next/link";
-import { ReviewCard } from "./components/review/ReviewCard";
-import { getReviews } from "@/requests/get";
+import React from "react";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScreenContentDefault } from "./components/ScreenContentDefault";
-import { GetReviews } from "@/requests/get/reviews/types";
-import { deleteReview } from "@/requests/delete";
+import { ReviewCard } from "./components/review/ReviewCard";
+import { Button } from "@/components/ui/button";
+
 import { useReviews } from "@/hooks/use-reviews";
+
+import { deleteReview } from "@/requests/delete";
+import Loading from "@/components/loading";
 
 const Dashboard = () => {
   const { data: session, status } = useSession({ required: true });
   const { reviews, setReviews } = useReviews();
 
-  if (status === "loading") return <p>Loading…</p>;
+  if (status === "loading") <Loading />;
 
   const handleDeleteReview = async (id: string) => {
     setReviews(reviews ? reviews.filter((review) => review._id !== id) : null);
@@ -32,10 +30,6 @@ const Dashboard = () => {
     try {
       const apiToken = (session as any).apiToken as string;
       const response = await deleteReview(id, apiToken);
-
-      if (response.status === 401) {
-        signOut({ redirect: false });
-      }
 
       if (!response.ok) {
         throw new Error();
