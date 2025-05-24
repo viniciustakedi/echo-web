@@ -1,152 +1,169 @@
-# echo-web
+# Echo Web Application
 
-A modern, responsive web application built with Next.js, TypeScript, Tailwind CSS, and ShadCN UI components. **echo-web** provides interactive map visualizations, themed UI, markdown-based content rendering, and multi-language support.
+A modern web application for reviewing and sharing travel experiences, featuring an interactive map interface and comprehensive review management system.
 
-## Table of Contents
+## 🚀 Features
 
-* [Demo](#demo)
-* [Features](#features)
-* [Tech Stack](#tech-stack)
-* [Getting Started](#getting-started)
+- 🗺️ Interactive Map Interface with location markers
+- ✍️ Review Management System
+- 🌍 Multi-language Support (i18n)
+- 🔐 Authentication with NextAuth.js
+- 📱 Responsive Design
+- 🎨 Modern UI with Tailwind CSS
+- 🔄 Real-time Updates
+- 📊 Dashboard Interface
 
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-  * [Environment Variables](#environment-variables)
-  * [Running the App](#running-the-app)
-* [Project Structure](#project-structure)
-* [Deployment](#deployment)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
+## 📋 Prerequisites
 
-## Demo
+- Node.js (v18 or higher)
+- npm or yarn
+- A MapTiler API key
+- JWT Public Key for authentication
 
-Live demo: *Coming soon or replace with your deployment URL*
+## 🛠️ Tech Stack
 
-## Features
+- **Framework**: Next.js 15.3.1
+- **Language**: TypeScript
+- **Authentication**: NextAuth.js
+- **State Management**: Jotai
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **Forms**: React Hook Form + Zod
+- **Maps**: MapLibre GL + React Map GL
+- **HTTP Client**: Axios
+- **Internationalization**: i18next
+- **Component Library**: Custom components with Radix UI primitives
 
-* **Interactive Map**: Visualize data on an interactive map using MapLibre GL and React Map GL.
-* **Theming**: Light and dark mode support with `next-themes`.
-* **Markdown Rendering**: Render rich Markdown content with `react-markdown` and `remark-gfm`.
-* **Internationalization**: Multi-language support using `i18next` and `react-i18next`.
-* **UI Components**: Built with ShadCN UI (Radix UI) components and Tailwind CSS.
-* **Carousel**: Embla Carousel for image/content sliders.
-* **Notifications**: Toast notifications with Sonner.
-* **Performance**: Data fetching and caching with TanStack React Query.
+## 📁 Project Structure
 
-## Tech Stack
+```
+src/
+├── app/                    # Next.js 13+ App Router
+│   ├── api/               # API Routes
+│   ├── dashboard/         # Dashboard Pages
+│   ├── home/             # Home Page Components
+│   ├── map/              # Map View
+│   ├── reviews/          # Reviews Pages
+│   └── sign-in/          # Authentication
+├── components/           # Shared Components
+│   ├── ui/              # UI Components
+│   ├── menu/            # Navigation Menu
+│   └── footer/          # Footer Component
+├── hooks/               # Custom React Hooks
+├── lib/                 # Utility Functions
+└── requests/           # API Request Functions
+    ├── delete/         # DELETE Endpoints
+    ├── get/            # GET Endpoints
+    ├── patch/          # PATCH Endpoints
+    └── post/           # POST Endpoints
+```
 
-* [Next.js](https://nextjs.org/) v15
-* [React](https://reactjs.org/) v19
-* TypeScript
-* [Tailwind CSS](https://tailwindcss.com/) v4
-* [ShadCN UI](https://ui.shadcn.com/)
-* [Radix UI](https://www.radix-ui.com/)
-* [MapLibre GL](https://maplibre.org/) & [React Map GL](https://visgl.github.io/react-map-gl/)
-* [TanStack React Query](https://tanstack.com/query/)
-* [i18next](https://www.i18next.com/) & [react-i18next](https://react.i18next.com/)
-* [react-markdown](https://github.com/remarkjs/react-markdown) & [remark-gfm](https://github.com/remarkjs/remark-gfm)
-* [Embla Carousel React](https://www.embla-carousel.com/)
-* [Sonner](https://github.com/lucasford/sonner)
-* `next-themes`
+## ⚙️ Environment Variables
 
-## Getting Started
+Create a `.env.local` file in the root directory with the following variables:
 
-### Prerequisites
+```bash
+# MapTiler API Key for map functionality
+NEXT_PUBLIC_MAPTILER_KEY=your_maptiler_key
 
-* Node.js (>=18.x)
-* npm or Yarn or pnpm or Bun
+# API URL for backend services
+NEXT_PUBLIC_API_URL=your_api_url
 
-### Installation
+# NextAuth.js Configuration
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+
+# JWT Configuration
+JWT_VERIFYING_PUBLIC_KEY=your_jwt_public_key
+```
+
+## 📥 Installation
 
 1. Clone the repository:
+```bash
+git clone <repository-url>
+cd echo-web
+```
 
-   ```bash
-   git clone https://github.com/viniciustakedi/echo-web.git
-   cd echo-web
-   ```
 2. Install dependencies:
-
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-### Environment Variables
-
-Create a `.env.local` file in the root directory and add the required variables based on `.env.example`:
-
-```env
-NEXT_PUBLIC_MAPTILER_KEY=<your_maptiler_api_key>
+```bash
+npm install
+# or
+yarn install
 ```
 
-### Running the App
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
+Then edit `.env.local` with your values.
 
-* **Development**:
-
-  ```bash
-  npm run dev
-  # or
-  yarn dev
-  # or
-  pnpm dev
-  bun dev
-  ```
-
-  Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-* **Production build**:
-
-  ```bash
-  npm run build
-  npm start
-  ```
-
-## Project Structure
-
-```plaintext
-.
-├── .env.example         # Example env variables
-├── config/              # App configuration files
-├── public/              # Static assets (images, fonts)
-├── src/
-│   ├── app/             # Next.js App Router pages and layouts
-│   ├── components/      # Reusable React components
-│   ├── lib/             # Utility functions and hooks
-│   ├── home/            # Home page feature components
-│   ├── hooks/           # Custom React hooks
-│   └── styles/          # Global CSS and Tailwind utilities
-├── .github/             # GitHub workflows (CI/CD)
-├── .vscode/             # Editor settings
-├── package.json         # Project metadata and scripts
-├── tsconfig.json        # TypeScript configuration
-└── README.md            # This file
+4. Start the development server:
+```bash
+npm run dev
+# or
+yarn dev
 ```
 
-## Deployment
+## 📄 Available Scripts
 
-Deploy the application to [Vercel](https://vercel.com/) for seamless integration:
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run start`: Start production server
+- `npm run lint`: Run ESLint
 
-1. Sign in to Vercel and create a new project.
-2. Link the GitHub repository.
-3. Add the `NEXT_PUBLIC_MAPTILER_KEY` environment variable in Vercel settings.
-4. Deploy!
+## 📱 Pages
 
-For other platforms, refer to Next.js deployment docs: [https://nextjs.org/docs/deployment](https://nextjs.org/docs/deployment)
+- `/` - Home page with featured experiences and destinations
+- `/map` - Interactive map with review markers
+- `/reviews` - List of all reviews
+- `/reviews/[id]` - Individual review page
+- `/dashboard` - User dashboard
+- `/dashboard/reviews` - User's reviews management
+- `/dashboard/new-review` - Create new review
+- `/dashboard/edit-review/[id]` - Edit existing review
+- `/sign-in` - Authentication page
 
-## Contributing
+## 🔒 Authentication
 
-Contributions are welcome! Please open an issue or submit a pull request for bug fixes and improvements.
+This project uses NextAuth.js for authentication with a custom credentials provider. Authentication flow includes:
 
-## License
+- JWT-based authentication
+- Protected routes in dashboard
+- API route protection
+- Session management
 
-This project is private. If you wish to open-source it, add a LICENSE file.
+## 🌐 API Integration
 
-## Contact
+The application integrates with a backend API through various endpoints:
 
-For questions or feedback, feel free to open an issue or connect via GitHub:
+- Authentication endpoints
+- Review management
+- Map markers
+- User data
 
-* GitHub: [@viniciustakedi](https://github.com/viniciustakedi)
+## 📦 Key Dependencies
+
+```json
+{
+  "@radix-ui/react-*": "UI component primitives",
+  "@tanstack/react-query": "Data fetching and caching",
+  "maplibre-gl": "Map rendering",
+  "next-auth": "Authentication",
+  "react-hook-form": "Form handling",
+  "zod": "Schema validation",
+  "i18next": "Internationalization"
+}
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add some amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a pull request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
