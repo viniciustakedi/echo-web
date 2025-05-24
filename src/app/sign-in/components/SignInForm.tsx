@@ -46,7 +46,7 @@ const SignInForm = () => {
   const onSubmit = async (data: SignInFormValues) => {
     try {
       const res = await signIn("credentials", {
-        redirect: false,
+        redirect: true,
         login: data.email,
         password: data.password,
       });

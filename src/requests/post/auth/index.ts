@@ -19,10 +19,3 @@ export const signIn = async ({
 
   return response;
 };
-
-export async function logout() {
-  await fetch("/api/logout", { method: "GET" });
-  // if (typeof window !== "undefined") {
-  //   window.location.href = "/sign-in";
-  // }
-}

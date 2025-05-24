@@ -34,7 +34,9 @@ const authHandler = NextAuth({
         if (!res.ok) {
           throw new Error("Invalid credentials");
         }
+
         const { data } = await res.json();
+
         try {
           jwt.verify(data, PUBLIC_KEY, { algorithms: ["RS256"] });
 
@@ -49,7 +51,7 @@ const authHandler = NextAuth({
 
           return { id: decodedToken.sub, apiToken: data };
         } catch {
-          return null;
+          return (await res.json()).message;
         }
       },
     }),
