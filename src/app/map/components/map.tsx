@@ -13,17 +13,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import CardTip from "./tip-card";
-import { getMapMarkerById, getMapMarkers } from "@/requests/get/map-markers";
+import { getMapMarkerById } from "@/requests/get/map-markers";
 import { GetMaps } from "@/requests/get/map-markers/types";
+import { useMapMarkers } from "@/hooks/use-map-markers";
 
 const ZOOM_DEFAULT = 17;
 
 export default function MapViewer() {
   // https://cloud.maptiler.com/maps/
 
-  const [mapMarkers, setMapMarkers] = React.useState<
-    GetMaps.MapMarker[] | null
-  >(null);
+  const { mapMarkers } = useMapMarkers();
 
   const [currentMarkerData, setCurrentMarkerData] =
     React.useState<GetMaps.MapMarkerDetailed | null>(null);
@@ -54,12 +53,13 @@ export default function MapViewer() {
   );
 
   React.useEffect(() => {
-    const fetchReview = async () => {
-      const response = await getMapMarkers({});
-      setMapMarkers(response);
-    };
+    // TO-DO: Implement pagination by map location
+    // const fetchReview = async () => {
+    //   const response = await getMapMarkers({});
+    //   setMapMarkers(response);
+    // };
 
-    fetchReview();
+    // fetchReview();
 
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
