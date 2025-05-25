@@ -12,15 +12,22 @@ import { createMapMarker } from "@/requests/post/map-markers";
 
 import { MapMarkerEditor } from "../components/map-marker/MapMarkerEditor";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
+
 import Loading from "@/components/loading";
 
+import { useMapMarkers } from "@/hooks/use-map-markers";
+import { useReviews } from "@/hooks/use-reviews";
+
 const NewMapMarker = () => {
+  const { setMapMarkers, mapMarkers } = useMapMarkers();
+  const { reviews } = useReviews();
+
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const { data: session, status } = useSession({ required: true });
 
-  if (status === "loading" || isLoading) return <Loading/>;
+  if (status === "loading" || isLoading) return <Loading />;
 
   const handleSaveMapMarker = async (data: PostMapMarker.Create) => {
     setIsLoading(true);
@@ -31,6 +38,26 @@ const NewMapMarker = () => {
 
       if (!response.ok) {
         throw new Error();
+      }
+
+      const reviewData = reviews.find((e) => e._id === data.reviewId);
+
+      if (reviewData?._id) {
+        const responseData = await response.json();
+
+        setMapMarkers([
+          ...mapMarkers,
+          {
+            _id: responseData.data._id,
+            latitude: Number(data.latitude),
+            longitude: Number(data.longitude),
+            review: {
+              _id: data.reviewId,
+              thumbnail: reviewData.thumbnail,
+              headline: reviewData.headline,
+            },
+          },
+        ]);
       }
 
       toast.success("Map marker created", {
