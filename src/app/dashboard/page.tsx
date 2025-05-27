@@ -17,15 +17,17 @@ import { useReviews } from "@/hooks/use-reviews";
 
 import { deleteReview } from "@/requests/delete";
 import Loading from "@/components/loading";
+import { useLoading } from "@/hooks/use-loading";
 
 const Dashboard = () => {
+  const { setIsLoading } = useLoading();
   const { data: session, status } = useSession({ required: true });
   const { reviews, setReviews } = useReviews();
 
   if (status === "loading") <Loading />;
 
   const handleDeleteReview = async (id: string) => {
-    setReviews(reviews ? reviews.filter((review) => review._id !== id) : null);
+    setIsLoading(true);
 
     try {
       const apiToken = (session as any).apiToken as string;
@@ -38,6 +40,10 @@ const Dashboard = () => {
       toast.success("Review deleted", {
         description: "The review has been successfully deleted.",
       });
+
+      setReviews(
+        reviews ? reviews.filter((review) => review._id !== id) : null
+      );
     } catch (error) {
       toast.error("Error in delete review!", {
         description:
@@ -45,6 +51,8 @@ const Dashboard = () => {
             ? error.message
             : "There was an error creating your review.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 

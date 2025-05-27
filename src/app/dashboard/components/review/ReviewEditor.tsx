@@ -118,7 +118,7 @@ export function ReviewEditor({
             type="number"
             min={1}
             max={5}
-            step={0.5}
+            step={0.1}
             {...register("priceRating", {
               required: "Price Rating is required",
               min: { value: 1, message: "Price rating must be at least 1" },
@@ -142,7 +142,7 @@ export function ReviewEditor({
             type="number"
             min={1}
             max={5}
-            step={0.5}
+            step={0.1}
             {...register("rating", {
               required: "Rating is required",
               min: { value: 1, message: "Rating must be at least 1" },

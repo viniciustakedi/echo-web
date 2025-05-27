@@ -42,7 +42,6 @@ export const getMapMarkerById = async (
 
     return result.data as GetMaps.MapMarkerDetailed;
   } catch (error) {
-    console.error("Error fetching map marker by ID:", error);
     throw error;
   }
 };

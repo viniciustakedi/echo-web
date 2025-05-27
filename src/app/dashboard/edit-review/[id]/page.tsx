@@ -14,20 +14,25 @@ import { ScreenContentDefault } from "../../components/ScreenContentDefault";
 import { GetReviews } from "@/requests/get/reviews/types";
 import { updateReview } from "@/requests/patch";
 import Loading from "@/components/loading";
+import { useLoading } from "@/hooks/use-loading";
+import { useReviews } from "@/hooks/use-reviews";
 
 const EditReview = () => {
   const { data: session } = useSession({ required: true });
-
-  const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, setIsLoading } = useLoading();
+  const { reviews, setReviews } = useReviews();
+  const { id } = useParams<{ id: string }>();
+
   const [reviewData, setReviewData] = useState<GetReviews.ReviewByKey | null>(
     null
   );
 
   useEffect(() => {
     const fetchReview = async () => {
+      setIsLoading(true);
+
       const response = await getReviewByKey(id);
 
       if (!response) {
@@ -38,11 +43,12 @@ const EditReview = () => {
         return;
       }
 
+      setIsLoading(false);
       setReviewData(response);
     };
 
     fetchReview();
-  }, [id, router]);
+  }, [id, router, setIsLoading]);
 
   const handleSaveReview = async (data: GetReviews.ReviewByKey) => {
     setIsLoading(true);
@@ -64,10 +70,29 @@ const EditReview = () => {
         description: "Your review has been successfully updated.",
       });
 
+      const oldReviews = reviews.filter((e) => e._id !== reviewData._id);
+      const newReviews = [
+        ...oldReviews,
+        {
+          _id: reviewData._id,
+          thumbnail: data.thumbnail,
+          headline: data.headline,
+          friendlyUrl: data.friendlyUrl,
+          rating: Number(data.rating),
+          address: data.address,
+          country: data.country,
+          city: data.city,
+          claps: data.claps,
+          createdAt: data.createdAt,
+          priceRating: Number(data.priceRating),
+          tags: data.tags,
+        },
+      ];
+
+      setReviews(newReviews);
+
       router.push(`/dashboard/review/${id}`);
     } catch (error) {
-      console.error("Error updating review:", error);
-
       toast.error("Error", {
         description:
           error instanceof Error

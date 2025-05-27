@@ -57,8 +57,6 @@ export function StarRating({ rating, maxStars = 5 }: StarRatingProps) {
 
   const roundedKey = roundRating(rating) as RatingKey;
 
-  console.log(rating, roundedKey);
-
   return (
     <Tooltip>
       <TooltipTrigger asChild>
