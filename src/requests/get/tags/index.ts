@@ -28,7 +28,6 @@ export const getTags = async (
     const result: GetTags.Response = await response.json();
     return result.data;
   } catch (error) {
-    console.error("Error fetching review by key:", error);
     throw error;
   }
 };

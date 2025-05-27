@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useSession } from "next-auth/react";
-import { Edit } from "lucide-react";
+import { Edit, Rss } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -28,7 +28,6 @@ const MapMarkers = () => {
   }
 
   const handleDeleteMapMarker = async (id: string) => {
-    setMapMarkers(mapMarkers.filter((mapMarker) => mapMarker._id !== id));
     setIsLoading(true);
 
     try {
@@ -36,19 +35,16 @@ const MapMarkers = () => {
       const response = await deleteMapMarker(id, apiToken);
 
       if (!response.ok) {
-        throw new Error();
+        throw new Error((await response.json()).message);
       }
 
       toast.success("Map Marker deleted", {
         description: "The map marker has been successfully deleted.",
       });
-    } catch (error) {
-      toast.error("Error in delete map marker!", {
-        description:
-          error instanceof Error
-            ? error.message
-            : "There was an error creating your map marker.",
-      });
+
+      setMapMarkers(mapMarkers.filter((mapMarker) => mapMarker._id !== id));
+    } catch {
+      toast.error("There was an error creating your map marker.");
     } finally {
       setIsLoading(false);
     }

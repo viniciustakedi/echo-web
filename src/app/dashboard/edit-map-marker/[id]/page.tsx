@@ -14,6 +14,7 @@ import { MapMarkerEditor } from "../../components/map-marker/MapMarkerEditor";
 import { updateMapMarker } from "@/requests/patch/map-markers";
 import { PatchMaps } from "@/requests/patch/map-markers/types";
 import Loading from "@/components/loading";
+import { useLoading } from "@/hooks/use-loading";
 
 const EditMapMarker = () => {
   const { data: session } = useSession({ required: true });
@@ -21,12 +22,14 @@ const EditMapMarker = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, setIsLoading } = useLoading();
   const [mapMarkerData, setMapMarkerData] =
     useState<GetMaps.MapMarkerDetailed | null>(null);
 
   useEffect(() => {
     const getchMapMarker = async () => {
+      setIsLoading(true);
+
       const response = await getMapMarkerById(id);
 
       if (!response) {
@@ -38,10 +41,11 @@ const EditMapMarker = () => {
       }
 
       setMapMarkerData(response);
+      setIsLoading(false);
     };
 
     getchMapMarker();
-  }, [id, router]);
+  }, [id, router, setIsLoading]);
 
   const handleSaveMapMarker = async (data: PatchMaps.UpdateMapMarker) => {
     setIsLoading(true);
@@ -65,8 +69,6 @@ const EditMapMarker = () => {
 
       router.push(`/dashboard/map-marker/${id}`);
     } catch (error) {
-      console.error("Error updating map marker:", error);
-
       toast.error("Error", {
         description:
           error instanceof Error

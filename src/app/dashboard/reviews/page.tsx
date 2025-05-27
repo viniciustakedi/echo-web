@@ -38,13 +38,7 @@ const Reviews = () => {
     // };
   }, [page, limit]);
 
-  if (!reviews || reviews.length === 0) {
-    return <Loading />;
-  }
-
   const handleDeleteReview = async (id: string) => {
-    setReviews(reviews.filter((review) => review._id !== id));
-
     try {
       const apiToken = (session as any).apiToken as string;
       const response = await deleteReview(id, apiToken);
@@ -56,6 +50,8 @@ const Reviews = () => {
       toast.success("Review deleted", {
         description: "The review has been successfully deleted.",
       });
+
+      setReviews(reviews.filter((review) => review._id !== id));
     } catch (error) {
       toast.error("Error in delete review!", {
         description:
@@ -66,10 +62,9 @@ const Reviews = () => {
     }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || !reviews || reviews.length === 0) {
     return <Loading />;
   }
-
   return (
     <ScreenContentDefault>
       <div className="space-y-6">
