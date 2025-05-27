@@ -20,7 +20,6 @@ export const getReviewByKey = async (
     const result: GetReviews.GetReviewResponse = await response.json();
     return result.data;
   } catch (error) {
-    console.error("Error fetching review by key:", error);
     throw error;
   }
 };

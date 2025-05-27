@@ -2,7 +2,6 @@
 
 "use client";
 
-import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -17,17 +16,18 @@ import Loading from "@/components/loading";
 
 import { useMapMarkers } from "@/hooks/use-map-markers";
 import { useReviews } from "@/hooks/use-reviews";
+import { useLoading } from "@/hooks/use-loading";
 
 const NewMapMarker = () => {
   const { setMapMarkers, mapMarkers } = useMapMarkers();
   const { reviews } = useReviews();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, setIsLoading } = useLoading();
   const router = useRouter();
 
   const { data: session, status } = useSession({ required: true });
 
-  if (status === "loading" || isLoading) return <Loading />;
+  if (status === "loading") return <Loading />;
 
   const handleSaveMapMarker = async (data: PostMapMarker.Create) => {
     setIsLoading(true);

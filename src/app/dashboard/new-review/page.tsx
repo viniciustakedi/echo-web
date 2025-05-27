@@ -2,7 +2,6 @@
 
 "use client";
 
-import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ReviewEditor } from "../components/review/ReviewEditor";
@@ -11,14 +10,15 @@ import { createReview } from "@/requests/post";
 import { useSession } from "next-auth/react";
 import { GetReviews } from "@/requests/get/reviews/types";
 import Loading from "@/components/loading";
+import { useLoading } from "@/hooks/use-loading";
 
 const NewReview = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, setIsLoading } = useLoading();
   const router = useRouter();
 
   const { data: session, status } = useSession({ required: true });
 
-  if (status === "loading" || isLoading) return <Loading />;
+  if (status === "loading") return <Loading />;
 
   const handleSaveReview = async (data: GetReviews.ReviewByKey) => {
     setIsLoading(true);
