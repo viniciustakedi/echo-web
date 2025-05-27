@@ -81,7 +81,7 @@ JWT_VERIFYING_PUBLIC_KEY=your_jwt_public_key
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone git@github.com:viniciustakedi/echo-web.git
 cd echo-web
 ```
 
