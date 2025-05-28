@@ -20,7 +20,6 @@ export function ScreenContentDefault({
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background">
         <AppSidebar />
-        {/* 16rem */}
         <div className="flex flex-1 flex-col overflow-hidden relative">
           <header
             className="fixed h-14 border-b flex items-center px-6 justify-between w-full bg-white"

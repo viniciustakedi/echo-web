@@ -42,11 +42,16 @@ export function ReviewDetail({ review }: ReviewDetailProps) {
             {review.city}, {review.country}
           </div>
         </div>
+        <div className="flex flex-wrap items-center gap-1 mt-2">
+          {review.tags.map((tag) => (
+            <Badge key={tag.name} variant="secondary">
+              {tag.name}
+            </Badge>
+          ))}
+        </div>
       </CardHeader>
 
-      <CardContent className="pt-6">
-        <h2 className="text-xl font-semibold mb-1">{review.headline}</h2>
-
+      <CardContent className="">
         <Separator className="my-4" />
 
         <MarkdownRenderer content={review.content} />
@@ -54,7 +59,7 @@ export function ReviewDetail({ review }: ReviewDetailProps) {
         {review.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-6">
             {review.tags.map((tag: { name: string }) => (
-              <Badge key={tag.name} variant="outline">
+              <Badge key={tag.name} variant="secondary">
                 {tag.name}
               </Badge>
             ))}

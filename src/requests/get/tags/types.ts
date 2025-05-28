@@ -2,6 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
 export namespace GetTags {
+  export interface Tag {
+    _id: string;
+    name: string;
+    createdAt: string;
+  }
   export interface Tags {
     _id: string;
     name: string;

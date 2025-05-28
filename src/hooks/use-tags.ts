@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { tagsAtom } from "@/atoms/tags";
 
 export function useTags() {
-  const [tags] = useAtom(tagsAtom);
+  const [tags, setTags] = useAtom(tagsAtom);
   const loading = tags === null;
-  return { tags: tags ?? [], loading };
+  return { tags: tags ?? [], loading, setTags };
 }
