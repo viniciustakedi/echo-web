@@ -1,6 +1,6 @@
 "use client";
 
-import { Book, LayoutDashboard, LogOut, MapPin } from "lucide-react";
+import { Book, LayoutDashboard, LogOut, MapPin, Tag } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
@@ -23,6 +23,7 @@ export function AppSidebar() {
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
     { title: "Reviews", url: "/dashboard/reviews", icon: Book },
     { title: "Map Markers", url: "/dashboard/map-markers", icon: MapPin },
+    { title: "Tags", url: "/dashboard/tags", icon: Tag },
     { title: "Log Out", url: "logout", icon: LogOut },
   ];
 
