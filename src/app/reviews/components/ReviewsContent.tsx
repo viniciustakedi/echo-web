@@ -9,7 +9,10 @@ import { Text } from "@/components/ui/text";
 import { Title } from "@/components/ui/title";
 import Loading from "@/components/loading";
 import { Badge } from "@/components/ui/badge";
+
 import { useReviews } from "@/hooks/use-reviews";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 export default function ReviewsContent() {
   const { reviews } = useReviews();
@@ -38,55 +41,61 @@ export default function ReviewsContent() {
   }
 
   return (
-    <div className="flex flex-col items-center mt-32 w-full h-full p-4">
-      <div className="flex flex-col items-start w-full max-w-3xl">
-        <h1 className="text-4xl font-bold mb-4">Last Reviews</h1>
-        <hr className="border-gray-300 w-full" />
-      </div>
-      <div className="w-full max-w-3xl">
-        {reviews.map((review) => (
-          <div key={review._id}>
-            <div
-              className="flex flex-row justify-between items-center my-5 cursor-pointer gap-4"
-              onClick={() => router.push(`/reviews/${review.friendlyUrl}`)}
-            >
-              <div>
-                <Title className="text-xl text-[#323232] font-black">
-                  {review.headline}
-                </Title>
-                <Text className="text-lg text-gray-500">
-                  {review.city}, {review.country}
-                </Text>
-                <div className="flex flex-wrap items-center gap-1 mt-2 mb-4">
-                  {review.tags.map((tag) => (
-                    <Badge key={tag.name} variant="secondary">
-                      {tag.name}
-                    </Badge>
-                  ))}
+    <Card className="max-w-3xl mx-auto border shadow-sm">
+      <CardHeader>
+        <div className="flex justify-between items-start">
+          <h1 className="text-2xl font-bold">Last Reviews</h1>
+        </div>
+
+        <Separator className="mt-2" />
+      </CardHeader>
+
+      <CardContent>
+        <div className="w-full max-w-3xl">
+          {reviews.map((review) => (
+            <div key={review._id}>
+              <div
+                className="flex flex-row justify-between items-center my-5 cursor-pointer gap-4"
+                onClick={() => router.push(`/reviews/${review.friendlyUrl}`)}
+              >
+                <div>
+                  <Title className="text-xl text-[#323232] font-black">
+                    {review.headline}
+                  </Title>
+                  <Text className="text-lg text-gray-500">
+                    {review.city}, {review.country}
+                  </Text>
+                  <div className="flex flex-wrap items-center gap-1 mt-2 mb-4">
+                    {review.tags.map((tag) => (
+                      <Badge key={tag.name} variant="secondary">
+                        {tag.name}
+                      </Badge>
+                    ))}
+                  </div>
+                  <p className="text-gray-500">
+                    Published on{" "}
+                    {new Date(review.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
                 </div>
-                <p className="text-gray-500">
-                  Published on{" "}
-                  {new Date(review.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
+                <div className="md:w-48 w-36 md:h-36 h-24">
+                  <Image
+                    src={review.thumbnail}
+                    alt={review.headline}
+                    width={1200}
+                    height={1200}
+                    className="w-full h-full rounded-lg mb-4 object-cover"
+                  />
+                </div>
               </div>
-              <div>
-                <Image
-                  src={review.thumbnail}
-                  alt={review.headline}
-                  width={1200}
-                  height={1200}
-                  className="md:w-56 md:h-36 w-auto h-24 rounded-lg mb-4 object-cover"
-                />
-              </div>
+              <hr className="border-gray-300" />
             </div>
-            <hr className="border-gray-300" />
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
