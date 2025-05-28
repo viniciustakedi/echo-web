@@ -105,12 +105,6 @@ const Reviews = () => {
     return <Loading />;
   }
 
-  const teste = () => {
-    toast.success(`Tag`, {
-      description: `The tag has been successfully`,
-    });
-  };
-
   return (
     <ScreenContentDefault>
       <div className="space-y-6">

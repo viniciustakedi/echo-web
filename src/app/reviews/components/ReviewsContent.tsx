@@ -12,7 +12,6 @@ import { Badge } from "@/components/ui/badge";
 
 import { useReviews } from "@/hooks/use-reviews";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Star } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export default function ReviewsContent() {

@@ -12,7 +12,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { GetTags } from "@/requests/get/tags/types";
 
@@ -65,7 +64,7 @@ export function TagModalEditor({
         <DialogHeader>
           <DialogTitle>Tag</DialogTitle>
           <DialogDescription>
-            Make changes to your tag here. Click save when you're done.
+            Make changes to your tag here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
