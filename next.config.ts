@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   images: {
     domains: [
-      "takedi-portfolio.s3.sa-east-1.amazonaws.com",
+      "echo-app-images.s3.sa-east-1.amazonaws.com",
       "www.lospaghetto.com.br",
       "images.unsplash.com",
       "unsplash.com",
