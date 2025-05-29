@@ -1,6 +1,11 @@
+"use client";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,6 +27,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+import { uploadImage } from "@/requests/post/images";
+import { deleteImage } from "@/requests/delete/images";
+import { useSession } from "next-auth/react";
+import { useLoading } from "@/hooks/use-loading";
 
 interface ReviewEditorProps {
   initialData?: Partial<GetReviews.ReviewByKey>;
@@ -34,17 +44,26 @@ export function ReviewEditor({
   onSave,
   isLoading = false,
 }: ReviewEditorProps) {
+  // TODO: Add an temporary store to store user images while they are editing the review, so
+  // I just do the upload or delete the image to the bucket when user click save button, 
+  // if the image is not in the temporary store, I just do the upload or delete the image from the database.
+
   const { tags: tagsCtx } = useTags();
+  const { setIsLoading } = useLoading();
+
   const [activeTab, setActiveTab] = useState("edit");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<{ name: string; _id: string }[]>(
     initialData?.tags || []
   );
 
+  const { data: session } = useSession({ required: true });
+
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<GetReviews.ReviewByKey>({
     defaultValues: {
@@ -61,6 +80,45 @@ export function ReviewEditor({
   });
 
   const content = watch("content");
+  const [previousContent, setPreviousContent] = useState(content);
+
+  // Function to extract image IDs from markdown content
+  const extractImageIds = (markdownContent: string) => {
+    const regex = /!\[(.*?)\]\((.*?)\)/g;
+    const matches = [...markdownContent.matchAll(regex)];
+    return matches.map(match => match[1]); // The ID is in the alt text
+  };
+
+  useEffect(() => {
+    const previousImageIds = new Set(extractImageIds(previousContent));
+    const currentImageIds = new Set(extractImageIds(content));
+
+    // Find deleted image IDs
+    const deletedImageIds = [...previousImageIds].filter(id => !currentImageIds.has(id));
+
+    // Delete each removed image
+    const deleteImages = async (): Promise<void> => {
+      const apiToken = (session as any).apiToken as string;
+
+      setIsLoading(true);
+
+      for (const imageId of deletedImageIds) {
+        try {
+          await deleteImage(imageId, apiToken);
+        } catch (error) {
+          console.error(`Failed to delete image ${imageId}:`, error);
+        }
+      }
+
+      setIsLoading(false);
+    };
+
+    if (deletedImageIds.length > 0) {
+      deleteImages();
+    }
+
+    setPreviousContent(content);
+  }, [content, session, previousContent, setIsLoading]);
 
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter((tag) => tag.name !== tagToRemove));
@@ -68,6 +126,56 @@ export function ReviewEditor({
 
   const onSubmit = (data: GetReviews.ReviewByKey) => {
     onSave({ ...data, tags });
+  };
+
+  const handleImageUpload = async (file: File) => {
+    try {
+      setIsLoading(true);
+
+      const apiToken = (session as any).apiToken as string;
+      const response = await uploadImage({ file }, apiToken);
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const data = (await response.json()).data;
+      const imageMarkdown = `![${data._id}](${data.url})`;
+
+      const newContent = content + "\n" + imageMarkdown;
+      setValue("content", newContent);
+
+      toast("Success", {
+        description: "Image uploaded successfully",
+      });
+    } catch {
+      toast.error("Error", {
+        description: "Failed to upload image",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.startsWith('image/'));
+
+    if (imageFile) {
+      await handleImageUpload(imageFile);
+    } else {
+      toast.error("Error", {
+        description: "Please drop an image file",
+      });
+    }
   };
 
   return (
@@ -282,11 +390,12 @@ export function ReviewEditor({
             <Textarea
               id="content"
               {...register("content", { required: "Content is required" })}
-              rows={12}
-              className={`font-mono ${
-                errors.content ? "border-destructive" : ""
-              }`}
-              placeholder="Write your review in Markdown..."
+              rows={24}
+              className={`font-mono ${errors.content ? "border-destructive" : ""
+                }`}
+              placeholder="Write your review in Markdown or drag and drop images here..."
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
             />
             {errors.content && (
               <p className="text-destructive text-sm mt-1">
