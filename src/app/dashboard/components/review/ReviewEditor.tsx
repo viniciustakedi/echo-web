@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -32,6 +31,7 @@ import { uploadImage } from "@/requests/post/images";
 import { deleteImage } from "@/requests/delete/images";
 import { useSession } from "next-auth/react";
 import { useLoading } from "@/hooks/use-loading";
+import Image from "next/image";
 
 interface ReviewEditorProps {
   initialData?: Partial<GetReviews.ReviewByKey>;
@@ -81,6 +81,11 @@ export function ReviewEditor({
 
   const content = watch("content");
   const [previousContent, setPreviousContent] = useState(content);
+  const [thumbnailError, setThumbnailError] = useState<boolean>(false);
+  const [thumbnailType, setThumbnailType] = useState<"file" | "url">(
+    initialData?.thumbnail ? "url" : "file"
+  );
+  const [temporaryThumbnail, setTemporaryThumbnail] = useState<File | null>(null);
 
   // Function to extract image IDs from markdown content
   const extractImageIds = (markdownContent: string) => {
@@ -124,8 +129,49 @@ export function ReviewEditor({
     setTags(tags.filter((tag) => tag.name !== tagToRemove));
   };
 
-  const onSubmit = (data: GetReviews.ReviewByKey) => {
-    onSave({ ...data, tags });
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setThumbnailError(false);
+      setTemporaryThumbnail(file);
+    }
+  };
+
+  const handleTabChange = (value: string) => {
+    if (value === "url") {
+      setTemporaryThumbnail(null);
+    }
+
+    setThumbnailType(value as "file" | "url");
+  };
+
+  const onSubmit = async (data: GetReviews.ReviewByKey) => {
+    try {
+      setThumbnailError(false);
+
+      if (thumbnailType === "file" && !temporaryThumbnail) {
+        setThumbnailError(true);
+        return;
+      }
+
+      if (thumbnailType === "file" && temporaryThumbnail) {
+        const apiToken = (session as any).apiToken as string;
+        const response = await uploadImage({ file: temporaryThumbnail }, apiToken);
+
+        if (!response.ok) {
+          throw new Error("Failed to upload thumbnail");
+        }
+
+        const imageData = (await response.json()).data;
+        data.thumbnail = imageData.url;
+      }
+
+      onSave({ ...data, tags });
+    } catch {
+      toast.error("Error", {
+        description: "Failed to process the form",
+      });
+    }
   };
 
   const handleImageUpload = async (file: File) => {
@@ -180,40 +226,96 @@ export function ReviewEditor({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <Label htmlFor="headline" className="mb-2">
-            Headline
-          </Label>
-          <Input
-            id="headline"
-            {...register("headline", { required: "Headline is required" })}
-            className={errors.headline ? "border-destructive" : ""}
-          />
-          {errors.headline && (
-            <p className="text-destructive text-sm mt-1">
-              {errors.headline.message}
-            </p>
-          )}
-        </div>
+      <div>
+        <Label htmlFor="thumbnail" className="mb-2">
+          Thumbnail
+        </Label>
+        <div className="space-y-2">
+          <Tabs
+            value={thumbnailType}
+            onValueChange={handleTabChange}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="file">Upload File</TabsTrigger>
+              <TabsTrigger value="url">Image URL</TabsTrigger>
+            </TabsList>
 
-        <div>
-          <Label htmlFor="thumbnail" className="mb-2">
-            Thumbnail
-          </Label>
-          <Input
-            id="thumbnail"
-            {...register("thumbnail", {
-              required: "Thumbnail name is required",
-            })}
-            className={errors.thumbnail ? "border-destructive" : ""}
-          />
+            <TabsContent value="file" className="mt-2 space-y-4">
+              <Input
+                id="thumbnail-file"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className={`${thumbnailError ? "border-destructive" : ""} mb-0`}
+              />
+              {thumbnailError && (
+                <p className="text-destructive text-sm mt-1">
+                  Please select an image
+                </p>
+              )}
+              {temporaryThumbnail && (
+                <div className="w-full aspect-video rounded-md overflow-hidden border">
+                  <Image
+                    src={URL.createObjectURL(temporaryThumbnail)}
+                    alt="Thumbnail preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="url" className="mt-2 space-y-4">
+              <Input
+                id="thumbnail"
+                type="url"
+                placeholder="Enter image URL"
+                {...register("thumbnail", {
+                  required: thumbnailType === "url" ? "Thumbnail URL is required" : false,
+                  pattern: {
+                    value: /^https?:\/\/.+/i,
+                    message: "Please enter a valid URL starting with http:// or https://"
+                  }
+                })}
+                className={errors.thumbnail ? "border-destructive" : ""}
+              />
+              {thumbnailType === "url" && watch("thumbnail") && (
+                <div className="w-full aspect-video rounded-md overflow-hidden border">
+                  <Image
+                    src={watch("thumbnail")}
+                    alt="Thumbnail preview"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      img.style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
           {errors.thumbnail && (
             <p className="text-destructive text-sm mt-1">
               {errors.thumbnail.message}
             </p>
           )}
         </div>
+      </div>
+
+      <div>
+        <Label htmlFor="headline" className="mb-2">
+          Headline
+        </Label>
+        <Input
+          id="headline"
+          {...register("headline", { required: "Headline is required" })}
+          className={errors.headline ? "border-destructive" : ""}
+        />
+        {errors.headline && (
+          <p className="text-destructive text-sm mt-1">
+            {errors.headline.message}
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
