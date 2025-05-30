@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -32,6 +31,7 @@ import { uploadImage } from "@/requests/post/images";
 import { deleteImage } from "@/requests/delete/images";
 import { useSession } from "next-auth/react";
 import { useLoading } from "@/hooks/use-loading";
+import Image from "next/image";
 
 interface ReviewEditorProps {
   initialData?: Partial<GetReviews.ReviewByKey>;
@@ -167,7 +167,7 @@ export function ReviewEditor({
       }
 
       onSave({ ...data, tags });
-    } catch (error) {
+    } catch {
       toast.error("Error", {
         description: "Failed to process the form",
       });
@@ -256,7 +256,7 @@ export function ReviewEditor({
               )}
               {temporaryThumbnail && (
                 <div className="w-full aspect-video rounded-md overflow-hidden border">
-                  <img
+                  <Image
                     src={URL.createObjectURL(temporaryThumbnail)}
                     alt="Thumbnail preview"
                     className="w-full h-full object-cover"
@@ -281,7 +281,7 @@ export function ReviewEditor({
               />
               {thumbnailType === "url" && watch("thumbnail") && (
                 <div className="w-full aspect-video rounded-md overflow-hidden border">
-                  <img
+                  <Image
                     src={watch("thumbnail")}
                     alt="Thumbnail preview"
                     className="w-full h-full object-cover"
