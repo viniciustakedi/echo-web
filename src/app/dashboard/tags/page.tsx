@@ -75,11 +75,10 @@ const Reviews = () => {
           throw new Error((await response.json()).message);
         }
 
-        const oldTags = tags.filter((tag) => tag._id !== e._id);
         const responseJson = (await response.json()).data;
 
         setTags([
-          ...oldTags,
+          ...tags,
           {
             _id: responseJson._id,
             name: e.name,

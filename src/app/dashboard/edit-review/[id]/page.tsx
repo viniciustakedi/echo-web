@@ -83,7 +83,7 @@ const EditReview = () => {
           country: data.country,
           city: data.city,
           claps: data.claps,
-          createdAt: data.createdAt,
+          createdAt: reviews.find((e) => e._id === reviewData._id)?.createdAt ?? "",
           priceRating: Number(data.priceRating),
           tags: data.tags,
         },
