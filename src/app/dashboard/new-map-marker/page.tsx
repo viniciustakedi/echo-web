@@ -19,7 +19,7 @@ import { useReviews } from "@/hooks/use-reviews";
 import { useLoading } from "@/hooks/use-loading";
 
 const NewMapMarker = () => {
-  const { setMapMarkers, mapMarkers } = useMapMarkers();
+  const { mapMarkers, setMapMarkers } = useMapMarkers();
   const { reviews } = useReviews();
 
   const { isLoading, setIsLoading } = useLoading();

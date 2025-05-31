@@ -260,6 +260,8 @@ export function ReviewEditor({
                     src={URL.createObjectURL(temporaryThumbnail)}
                     alt="Thumbnail preview"
                     className="w-full h-full object-cover"
+                    width={1200}
+                    height={1200}
                   />
                 </div>
               )}
@@ -289,6 +291,8 @@ export function ReviewEditor({
                       const img = e.target as HTMLImageElement;
                       img.style.display = 'none';
                     }}
+                    width={1200}
+                    height={1200}
                   />
                 </div>
               )}
