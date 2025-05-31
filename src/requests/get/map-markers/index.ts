@@ -20,6 +20,21 @@ export const getMapMarkers = async ({
   );
 
   const result: GetMaps.Response = await response.json();
+
+  if (Array.isArray(result.data)) {
+    result.data = result.data.map(marker => ({
+      ...marker,
+      latitude: Number(marker.latitude),
+      longitude: Number(marker.longitude)
+    }));
+  } else {
+    result.data = {
+      ...result.data,
+      latitude: Number(result.data.latitude),
+      longitude: Number(result.data.longitude)
+    };
+  }
+
   return result.data as GetMaps.MapMarker[];
 };
 
