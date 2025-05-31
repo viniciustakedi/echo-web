@@ -2,18 +2,24 @@
 
 "use client";
 
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+
 import { ReviewEditor } from "../components/review/ReviewEditor";
 import { ScreenContentDefault } from "../components/ScreenContentDefault";
+
 import { createReview } from "@/requests/post";
-import { useSession } from "next-auth/react";
 import { GetReviews } from "@/requests/get/reviews/types";
+
 import Loading from "@/components/loading";
+
 import { useLoading } from "@/hooks/use-loading";
+import { useReviews } from "@/hooks/use-reviews";
 
 const NewReview = () => {
   const { isLoading, setIsLoading } = useLoading();
+  const { reviews, setReviews } = useReviews();
   const router = useRouter();
 
   const { data: session, status } = useSession({ required: true });
@@ -30,6 +36,26 @@ const NewReview = () => {
       if (!response.ok) {
         throw new Error();
       }
+
+      const responseData = await response.json();
+
+      setReviews([
+        ...reviews,
+        {
+          _id: responseData.data._id,
+          thumbnail: data.thumbnail,
+          headline: data.headline,
+          friendlyUrl: data.friendlyUrl,
+          rating: data.rating,
+          claps: data.claps,
+          address: data.address,
+          country: data.country,
+          city: data.city,
+          createdAt: data.createdAt,
+          priceRating: data.priceRating,
+          tags: data.tags,
+        }
+      ]);
 
       toast.success("Review created", {
         description: "Your review has been successfully created.",
