@@ -7,17 +7,21 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-import { getMapMarkerById } from "@/requests/get";
-import { ScreenContentDefault } from "../../components/ScreenContentDefault";
-import { GetMaps } from "@/requests/get/map-markers/types";
-import { MapMarkerEditor } from "../../components/map-marker/MapMarkerEditor";
 import { updateMapMarker } from "@/requests/patch/map-markers";
 import { PatchMaps } from "@/requests/patch/map-markers/types";
+import { GetMaps } from "@/requests/get/map-markers/types";
+import { getMapMarkerById } from "@/requests/get";
+
+import { ScreenContentDefault } from "../../components/ScreenContentDefault";
+import { MapMarkerEditor } from "../../components/map-marker/MapMarkerEditor";
 import Loading from "@/components/loading";
+
 import { useLoading } from "@/hooks/use-loading";
+import { useMapMarkers } from "@/hooks/use-map-markers";
 
 const EditMapMarker = () => {
   const { data: session } = useSession({ required: true });
+  const { mapMarkers, setMapMarkers } = useMapMarkers();
 
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
@@ -62,6 +66,25 @@ const EditMapMarker = () => {
       if (!response.ok) {
         throw new Error((await response.json()).message);
       }
+
+      const oldMapMarker = mapMarkers.find((e) => e._id === mapMarkerData._id);
+
+      if (oldMapMarker) {
+        setMapMarkers([
+          ...mapMarkers.filter((e) => e._id !== mapMarkerData._id),
+          {
+            _id: oldMapMarker._id,
+            latitude: Number(data.latitude),
+            longitude: Number(data.longitude),
+            review: {
+              _id: data.reviewId,
+              thumbnail: oldMapMarker.review.thumbnail,
+              headline: oldMapMarker.review.headline,
+            },
+          },
+        ]);
+      }
+
 
       toast.success("Map marker updated", {
         description: "Your map marker has been successfully updated.",
