@@ -7,21 +7,28 @@ import { getMapMarkers } from "@/requests/get";
 export function useMapMarkers() {
   const [mapMarkers, setMapMarkersAtom] = useAtom(mapMarkersAtom);
 
+  const setMapMarkers = useCallback((newValue: GetMaps.MapMarker[] | null) => {
+    setMapMarkersAtom(newValue);
+  }, [setMapMarkersAtom]);
+
+
   useEffect(() => {
-    if (mapMarkers === null) { 
-    getMapMarkers({ page: 1, limit: 15 }).then((fetched) => {
+    if (mapMarkers === null) {
+      getMapMarkers({ page: 1, limit: 15 }).then((fetched) => {
         setMapMarkers(fetched);
       });
     }
-  }, [mapMarkers]);
+  }, [mapMarkers, setMapMarkers]);
 
-  const setMapMarkers = useCallback((newValue: GetMaps.MapMarker[] | null) => {
-    setMapMarkersAtom(newValue);
+  const refetchMapMarkers = useCallback(async ({ page, limit }: { page: number; limit: number }) => {
+    const fetched = await getMapMarkers({ page, limit });
+    setMapMarkersAtom(Array.isArray(fetched) ? fetched : []);
   }, [setMapMarkersAtom]);
 
   return {
     mapMarkers: mapMarkers ?? [],
     loading: mapMarkers === null,
-    setMapMarkers
+    setMapMarkers,
+    refetchMapMarkers
   };
 }

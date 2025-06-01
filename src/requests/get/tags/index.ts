@@ -3,12 +3,18 @@ import { GetTags } from "./types";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const getTags = async (
-  page: number,
-  limit: number,
-  name?: string
+  {
+    page,
+    limit,
+    name
+  }: {
+    limit?: number;
+    page?: number;
+    name?: string;
+  }
 ): Promise<GetTags.Tags> => {
   try {
-    let url = `${BASE_URL}/tags?page=${page}&limit=${limit}`;
+    let url = `${BASE_URL}/tags?page=${page ?? 1}&limit=${limit ?? 20}`;
 
     if (name) {
       url += "&name=${name}";
