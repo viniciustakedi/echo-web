@@ -24,12 +24,16 @@ export const getReviewByKey = async (
   }
 };
 
-export const getReviews = async (
-  page: number,
-  limit: number
+export const getReviews = async ({
+  page,
+  limit
+}: {
+  limit?: number;
+  page?: number;
+}
 ): Promise<GetReviews.ReviewListItem[] | number> => {
   const response = await fetch(
-    `${BASE_URL}/reviews?page=${page}&limit=${limit}`,
+    `${BASE_URL}/reviews?page=${page ?? 1}&limit=${limit ?? 20}`,
     {
       method: "GET",
       headers: {

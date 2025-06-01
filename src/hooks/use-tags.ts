@@ -12,16 +12,26 @@ export function useTags() {
 
   useEffect(() => {
     if (tags === null) {
-      getTags(1, 20).then((fetched) => {
+      getTags({ page: 1, limit: 20 }).then((fetched) => {
         const _fetchedTags = Array.isArray(fetched) ? fetched : [];
         setTagsAtom(_fetchedTags);
       });
     }
-  }, [setTagsAtom]);
+  }, [tags, setTagsAtom]);
 
   const setTags = useCallback((newValue: GetTags.Tags[] | null) => {
     setTagsAtom(newValue);
   }, [setTagsAtom]);
 
-  return { tags: tags ?? [], loading, setTags };
+  const refetchTags = useCallback(async ({ page, limit }: { page: number; limit: number }) => {
+    const fetched = await getTags({ page, limit });
+    setTagsAtom(Array.isArray(fetched) ? fetched : []);
+  }, [setTagsAtom]);
+
+  return {
+    tags: tags ?? [],
+    setTags,
+    loading,
+    refetchTags
+  };
 }
