@@ -2,7 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Edit } from "lucide-react";
 import { toast } from "sonner";
@@ -23,24 +23,7 @@ const Reviews = () => {
   const { data: session, status } = useSession({ required: true });
 
   const { tags, setTags } = useTags();
-
   const [open, setOpen] = useState<boolean>(false);
-  const [page] = useState(1);
-  const [limit] = useState(10);
-
-  useEffect(() => {
-    // TO-DO: Create a new function like fetchNextPage in our hook useReviews
-    // const fetchReviews = async () => {
-    //   const response = await getReviews(page, limit);
-    //   if (response === 404) {
-    //     toast.error("You don't have any reviews", {
-    //       description:
-    //         "Don't worrie! Start to rating to build your reviews portfolio.",
-    //     });
-    //   }
-    //   setReviews(Array.isArray(response) ? response : null);
-    // };
-  }, [page, limit]);
 
   const handleOnSave = async (e: GetTags.Tag) => {
     let action: "updated" | "created" = "created";
@@ -100,7 +83,7 @@ const Reviews = () => {
     }
   };
 
-  if (status === "loading" || !tags || tags.length === 0) {
+  if (status === "loading") {
     return <Loading />;
   }
 

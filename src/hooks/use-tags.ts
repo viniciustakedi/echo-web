@@ -1,37 +1,61 @@
 import { useCallback, useEffect } from "react";
-import { useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 
-import { tagsAtom } from "@/atoms/tags";
+import { tagsAtom, tagsIsLoadingAtom } from "@/atoms/tags";
 
 import { getTags } from "@/requests/get";
 import { GetTags } from "@/requests/get/tags/types";
 
+import { useLoading } from "./use-loading";
+
+const totalTagsAtom = atom(0);
+
 export function useTags() {
+  const { setIsLoading } = useLoading();
+
   const [tags, setTagsAtom] = useAtom(tagsAtom);
-  const loading = tags === null;
+  const [isTagsLoading, setIsTagsLoading] = useAtom(tagsIsLoadingAtom);
+  const [totalTags, setTotalTags] = useAtom(totalTagsAtom);
 
   useEffect(() => {
-    if (tags === null) {
-      getTags({ page: 1, limit: 20 }).then((fetched) => {
-        const _fetchedTags = Array.isArray(fetched) ? fetched : [];
-        setTagsAtom(_fetchedTags);
+    if (tags === null && !isTagsLoading) {
+      setIsTagsLoading(true);
+      setIsLoading(true);
+
+      getTags({ page: 1, limit: 10 }).then((fetched) => {
+        setTotalTags(fetched.total);
+        setTagsAtom(Array.isArray(fetched.data) ? fetched.data : []);
+      }).finally(() => {
+        setIsLoading(false);
+        setIsTagsLoading(false);
       });
     }
-  }, [tags, setTagsAtom]);
+  }, [tags, setTagsAtom, isTagsLoading, setIsLoading, setIsTagsLoading, setTotalTags]);
 
   const setTags = useCallback((newValue: GetTags.Tags[] | null) => {
     setTagsAtom(newValue);
   }, [setTagsAtom]);
 
   const refetchTags = useCallback(async ({ page, limit }: { page: number; limit: number }) => {
+    if (isTagsLoading) return;
+
+    setIsLoading(true);
+    setIsTagsLoading(true);
+
     const fetched = await getTags({ page, limit });
-    setTagsAtom(Array.isArray(fetched) ? fetched : []);
-  }, [setTagsAtom]);
+
+    setTotalTags(fetched.total);
+    setTagsAtom(Array.isArray(fetched.data) ? fetched.data : []);
+
+    setIsLoading(false);
+    setIsTagsLoading(false);
+  }, [setTagsAtom, isTagsLoading, setIsLoading, setIsTagsLoading, setTotalTags]);
 
   return {
     tags: tags ?? [],
     setTags,
-    loading,
-    refetchTags
+    refetchTags,
+    pageLimit: 10,
+    total: totalTags
   };
 }
