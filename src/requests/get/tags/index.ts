@@ -12,7 +12,7 @@ export const getTags = async (
     page?: number;
     name?: string;
   }
-): Promise<GetTags.Tags> => {
+): Promise<GetTags.Response> => {
   try {
     let url = `${BASE_URL}/tags?page=${page ?? 1}&limit=${limit ?? 20}`;
 
@@ -31,8 +31,13 @@ export const getTags = async (
       throw new Error("Failed to fetch data");
     }
 
-    const result: GetTags.Response = await response.json();
-    return result.data;
+    const data = await response.json();
+
+    return {
+      ...data,
+      limit: Number(data.limit),
+      page: Number(data.page)
+    };
   } catch (error) {
     throw error;
   }

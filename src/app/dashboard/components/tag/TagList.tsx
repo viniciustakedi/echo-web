@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 
 import { GetTags } from "@/requests/get/tags/types";
@@ -10,6 +10,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -21,7 +22,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { TagModalEditor } from "./TagModalEditor";
+
+import { useTags } from "@/hooks/use-tags";
 
 interface TagListProps {
   tags: GetTags.Tags[];
@@ -29,11 +33,25 @@ interface TagListProps {
 }
 
 export function TagList({ tags, onUpdateTag }: TagListProps) {
+  const { pageLimit, total, refetchTags } = useTags();
   const [searchTerm, setSearchTerm] = useState("");
   const [tagId, setTagId] = useState<string>("");
 
   const [open, setOpen] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState("newest");
+
+  const [page, setPage] = useState(1);
+
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    refetchTags({ page, limit: pageLimit });
+  }, [page, pageLimit, refetchTags]);
 
   // Filter and sort tags
   const filteredTags = tags
@@ -120,8 +138,36 @@ export function TagList({ tags, onUpdateTag }: TagListProps) {
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={3}>
+                <div className="flex items-center justify-between">
+                  <p> Page with {filteredTags.length} tags</p>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={page === 1}
+                      onClick={() => setPage(state => state - 1)}
+                    >
+                      Previous
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={page * pageLimit >= total}
+                      onClick={() => setPage(state => state + 1)}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </div>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
-      )}
+      )
+      }
 
       <TagModalEditor
         initialData={tags.find((e) => e._id === tagId)}
@@ -129,6 +175,6 @@ export function TagList({ tags, onUpdateTag }: TagListProps) {
         setOpen={setOpen}
         onSave={onUpdateTag}
       />
-    </div>
+    </div >
   );
 }
