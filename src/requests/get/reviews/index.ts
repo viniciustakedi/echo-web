@@ -31,7 +31,7 @@ export const getReviews = async ({
   limit?: number;
   page?: number;
 }
-): Promise<GetReviews.ReviewListItem[] | number> => {
+): Promise<GetReviews.GetReviewsResponse> => {
   const response = await fetch(
     `${BASE_URL}/reviews?page=${page ?? 1}&limit=${limit ?? 20}`,
     {
@@ -42,10 +42,5 @@ export const getReviews = async ({
     }
   );
 
-  if (!response.ok) {
-    return response.status;
-  }
-
-  const result: GetReviews.GetReviewsResponse = await response.json();
-  return result.data;
+  return  await response.json();
 };

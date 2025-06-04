@@ -1,14 +1,12 @@
 import { useCallback, useEffect } from "react";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 
-import { tagsAtom, tagsIsLoadingAtom } from "@/atoms/tags";
+import { tagsAtom, tagsIsLoadingAtom, totalTagsAtom } from "@/atoms/tags";
 
 import { getTags } from "@/requests/get";
 import { GetTags } from "@/requests/get/tags/types";
 
 import { useLoading } from "./use-loading";
-
-const totalTagsAtom = atom(0);
 
 export function useTags() {
   const { setIsLoading } = useLoading();
@@ -16,6 +14,10 @@ export function useTags() {
   const [tags, setTagsAtom] = useAtom(tagsAtom);
   const [isTagsLoading, setIsTagsLoading] = useAtom(tagsIsLoadingAtom);
   const [totalTags, setTotalTags] = useAtom(totalTagsAtom);
+
+  const setTags = useCallback((newValue: GetTags.Tags[] | null) => {
+    setTagsAtom(newValue);
+  }, [setTagsAtom]);
 
   useEffect(() => {
     if (tags === null && !isTagsLoading) {
@@ -26,15 +28,11 @@ export function useTags() {
         setTotalTags(fetched.total);
         setTagsAtom(Array.isArray(fetched.data) ? fetched.data : []);
       }).finally(() => {
-        setIsLoading(false);
         setIsTagsLoading(false);
+        setIsLoading(false);
       });
     }
   }, [tags, setTagsAtom, isTagsLoading, setIsLoading, setIsTagsLoading, setTotalTags]);
-
-  const setTags = useCallback((newValue: GetTags.Tags[] | null) => {
-    setTagsAtom(newValue);
-  }, [setTagsAtom]);
 
   const refetchTags = useCallback(async ({ page, limit }: { page: number; limit: number }) => {
     if (isTagsLoading) return;
