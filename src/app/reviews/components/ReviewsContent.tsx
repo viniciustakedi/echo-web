@@ -18,27 +18,8 @@ export default function ReviewsContent() {
   const { reviews } = useReviews();
   const router = useRouter();
 
-  const [page] = useState(1);
-  const [limit] = useState(10);
 
-  useEffect(() => {
-    // TO-DO: Implement pagination
-    // const fetchReviews = async () => {
-    //   const response = await getReviews(page, limit);
-    //   if (response === 404) {
-    //     toast.error("You don't have any reviews", {
-    //       description:
-    //         "Don't worrie! Start to rating to build your reviews portfolio.",
-    //     });
-    //   }
-    //   setReviews(Array.isArray(response) ? response : null);
-    // };
-    // fetchReviews();
-  }, [page, limit]);
-
-  if (!reviews || reviews.length === 0) {
-    return <Loading />;
-  }
+  console.log(reviews)
 
   return (
     <Card className="max-w-3xl mx-auto border shadow-sm">

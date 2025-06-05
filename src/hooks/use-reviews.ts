@@ -25,7 +25,7 @@ export function useReviews() {
       setIsReviewsLoading(true);
       setIsLoading(true);
       getReviews({ page: 1, limit: 20 }).then((fetched) => {
-        setReviews(Array.isArray(fetched) ? fetched : []);
+        setReviews(Array.isArray(fetched.data) ? fetched.data : []);
         setTotalReviews(fetched.total);
       }).finally(() => {
         setIsReviewsLoading(false);
@@ -41,7 +41,7 @@ export function useReviews() {
     setIsLoading(true);
 
     const fetched = await getReviews({ page, limit });
-    setReviews(Array.isArray(fetched) ? fetched : []);
+    setReviews(Array.isArray(fetched.data) ? fetched.data : []);
     setTotalReviews(fetched.total);
 
     setIsReviewsLoading(false);
