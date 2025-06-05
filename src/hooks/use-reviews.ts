@@ -32,7 +32,7 @@ export function useReviews() {
         setIsLoading(false);
       });
     }
-  }, [reviews, setReviews, isReviewsLoading, setIsLoading, setIsReviewsLoading]);
+  }, [reviews, setReviews, isReviewsLoading, setIsLoading, setIsReviewsLoading, setTotalReviews]);
 
   const refetchReviews = useCallback(async ({ page, limit }: { page: number; limit: number }) => {
     if (isReviewsLoading) return;
@@ -46,7 +46,7 @@ export function useReviews() {
 
     setIsReviewsLoading(false);
     setIsLoading(false);
-  }, [setReviewsAtom, isReviewsLoading, setIsLoading, setIsReviewsLoading]);
+  }, [setReviewsAtom, isReviewsLoading, setIsLoading, setIsReviewsLoading, setReviews, setTotalReviews]);
 
   return {
     reviews: reviews ?? [],

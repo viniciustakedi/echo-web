@@ -1,13 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { Text } from "@/components/ui/text";
 import { Title } from "@/components/ui/title";
-import Loading from "@/components/loading";
 import { Badge } from "@/components/ui/badge";
 
 import { useReviews } from "@/hooks/use-reviews";
