@@ -47,7 +47,7 @@ export function useMapMarkers() {
 
     setIsMapMarkersLoading(false);
     setIsLoading(false);
-  }, [setMapMarkersAtom, isMapMarkersLoading, setIsLoading, setIsMapMarkersLoading, setTotalMapMarkers]);
+  }, [setMapMarkersAtom, isMapMarkersLoading, setIsLoading, setIsMapMarkersLoading, setTotalMapMarkers, setMapMarkers]);
 
   return {
     mapMarkers: mapMarkers ?? [],
