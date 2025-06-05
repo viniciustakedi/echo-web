@@ -25,14 +25,14 @@ export function useReviews() {
       setIsReviewsLoading(true);
       setIsLoading(true);
       getReviews({ page: 1, limit: 20 }).then((fetched) => {
-        setReviews(Array.isArray(fetched) ? fetched : []);
+        setReviews(Array.isArray(fetched.data) ? fetched.data : []);
         setTotalReviews(fetched.total);
       }).finally(() => {
         setIsReviewsLoading(false);
         setIsLoading(false);
       });
     }
-  }, [reviews, setReviews, isReviewsLoading, setIsLoading, setIsReviewsLoading]);
+  }, [reviews, setReviews, isReviewsLoading, setIsLoading, setIsReviewsLoading, setTotalReviews]);
 
   const refetchReviews = useCallback(async ({ page, limit }: { page: number; limit: number }) => {
     if (isReviewsLoading) return;
@@ -41,12 +41,12 @@ export function useReviews() {
     setIsLoading(true);
 
     const fetched = await getReviews({ page, limit });
-    setReviews(Array.isArray(fetched) ? fetched : []);
+    setReviews(Array.isArray(fetched.data) ? fetched.data : []);
     setTotalReviews(fetched.total);
 
     setIsReviewsLoading(false);
     setIsLoading(false);
-  }, [setReviewsAtom, isReviewsLoading, setIsLoading, setIsReviewsLoading]);
+  }, [setReviewsAtom, isReviewsLoading, setIsLoading, setIsReviewsLoading, setReviews, setTotalReviews]);
 
   return {
     reviews: reviews ?? [],
